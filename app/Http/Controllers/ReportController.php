@@ -1855,30 +1855,67 @@ class ReportController extends Controller
 
         if($request->input('search.value')) {
             $search = $request->input('search.value');
-            $totalData = Product::where([
-                ['name', 'LIKE', "%{$search}%"],
-                ['is_active', true]
-            ])->count();
-            $lims_product_all = Product::with('category')
-                                ->select('id', 'name', 'code', 'category_id', 'qty', 'is_variant', 'price', 'cost')
-                                ->where([
-                                    ['name', 'LIKE', "%{$search}%"],
-                                    ['is_active', true]
-                                ])->offset($start)
-                                  ->limit($limit)
-                                  ->orderBy($order, $dir)
-                                  ->get();
-        }
-        else {
-            $totalData = Product::where('is_active', true)->count();
-            $lims_product_all = Product::with('category')
-                                ->select('id', 'name', 'code', 'category_id', 'qty', 'is_variant', 'price', 'cost')
-                                ->where('is_active', true)
-                                ->offset($start)
-                                ->limit($limit)
-                                ->orderBy($order, $dir)
-                                ->get();
-        }
+
+        //     $totalData = Product::where([
+        //         ['name', 'LIKE', "%{$search}%"],
+        //         ['is_active', true]
+        //     ])->count();
+            
+        //     $lims_product_all = Product::with('category','brand')
+        //                         ->select('id', 'name', 'code', 'category_id','brand_id', 'qty', 'is_variant', 'price', 'cost')
+        //                         ->where([
+        //                             ['name', 'LIKE', "%{$search}%"],
+        //                             ['is_active', true]
+        //                         ])->offset($start)
+        //                           ->limit($limit)
+        //                           ->orderBy($order, $dir)
+        //                           ->get();
+        // }
+        // else {
+        //     $totalData = Product::where('is_active', true)->count();
+        //     $lims_product_all = Product::with('category')
+        //                         ->select('id', 'name', 'code', 'category_id', 'qty', 'is_variant', 'price', 'cost')
+        //                         ->where('is_active', true)
+        //                         ->offset($start)
+        //                         ->limit($limit)
+        //                         ->orderBy($order, $dir)
+        //                         ->get();
+        // }
+
+        // update code start by zilani
+            $totalData = Product::where('is_active', true)
+            ->where(function($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhereHas('brand', function($brandQuery) use ($search) {
+                        $brandQuery->where('title', 'LIKE', "%{$search}%");
+                    });
+            })->count();
+
+        $lims_product_all = Product::with('category', 'brand')
+            ->select('id', 'name', 'code', 'category_id', 'brand_id', 'qty', 'is_variant', 'price', 'cost')
+            ->where('is_active', true)
+            ->where(function($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                    ->orWhereHas('brand', function($brandQuery) use ($search) {
+                        $brandQuery->where('title', 'LIKE', "%{$search}%");
+                    });
+            })
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order, $dir)
+            ->get();
+    } else {
+        $totalData = Product::where('is_active', true)->count();
+
+        $lims_product_all = Product::with('category', 'brand')
+            ->select('id', 'name', 'code', 'category_id', 'brand_id', 'qty', 'is_variant', 'price', 'cost')
+            ->where('is_active', true)
+            ->offset($start)
+            ->limit($limit)
+            ->orderBy($order, $dir)
+            ->get();
+    }
+        // update code end by zilani
 
         $totalFiltered = $totalData;
         $data = [];
@@ -1932,7 +1969,7 @@ class ReportController extends Controller
                     $nestedData['name'] = $product->name.'<br>'.$product->code;
                     $nestedData['category'] = $product->category->name;
                     // Fetch brand name or set as "N/A" if not available
-                    $nestedData['brand'] = $product->brand ? $product->brand->title : "N/A";
+                    $nestedData['brand'] = $product->brand ? $product->brand->title : "Nothing find";
 
                     //sale data
                     $nestedData['sold_amount'] = Product_Sale::where('product_id', $product->id)->whereDate('created_at', '>=' , $start_date)->whereDate('created_at', '<=' , $end_date)->sum('total');
