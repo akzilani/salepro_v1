@@ -24,8 +24,8 @@
             <thead>
                 <tr>
                     <th class="not-exported"></th>
-                    <th>{{trans('file.Customer Group')}}</th>
-                    <th>{{trans('file.Customer Details')}}</th>
+                    <th> Style Group </th>
+                    <th> Style  Details </th>
                     <th>{{trans('file.Discount Plan')}}</th>
                     <th>{{trans('file.Reward Points')}}</th>
                     <th>{{trans('file.Deposited Balance')}}</th>

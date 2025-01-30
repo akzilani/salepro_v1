@@ -278,12 +278,12 @@
                 @endif
 
                 @if($customer_index_permission_active)
-                <li id="customer-list-menu"><a href="{{route('customer.index')}}">{{trans('file.Customer List')}}</a></li>
+                <li id="customer-list-menu"><a href="{{route('customer.index')}}"> Style List </a></li>
                 <?php
                     $customer_add_permission_active = $role_has_permissions_list->where('name', 'customers-add')->first();
                 ?>
                 @if($customer_add_permission_active)
-                <li id="customer-create-menu"><a href="{{route('customer.create')}}">{{trans('file.Add Customer')}}</a></li>
+                <li id="customer-create-menu"><a href="{{route('customer.create')}}"> Add Style </a></li>
                 @endif
                 @endif
 
