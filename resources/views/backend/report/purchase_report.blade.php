@@ -51,7 +51,8 @@
                 <tr>
                     <th class="not-exported"></th>
                     <th>{{trans('file.Product Name')}}</th>
-                    <th>{{trans('file.category')}}</th>
+                    <th> Style </th>
+                    <th> Brand </th>
                     <th>{{trans('file.Purchased Amount')}}</th>
                     <th>{{trans('file.Purchased')}} {{trans('file.qty')}}</th>
                     <th>{{trans('file.In Stock')}}</th>
@@ -123,6 +124,7 @@
             {"data": "key"},
             {"data": "name"},
             {"data": "category"},
+            {"data": "brand"},
             {"data": "purchased_amount"},
             {"data": "purchased_qty"},
             {"data": "in_stock"},
