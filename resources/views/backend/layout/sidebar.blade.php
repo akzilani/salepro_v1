@@ -73,9 +73,9 @@
             @if($sale_index_permission_active || $packing_slip_challan_active || $gift_card_permission_active || $coupon_permission_active || $delivery_permission_active)
             <li><a href="#sale" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-cart"></i><span>{{trans('file.Sale')}}</span></a>
             <ul id="sale" class="collapse list-unstyled ">
-                @if($sale_index_permission_active)
+                <!-- @if($sale_index_permission_active)
                 <li id="sale-list-menu"><a href="{{route('sales.index')}}">{{trans('file.Sale List')}}</a></li>
-                @endif
+                @endif -->
                 @if($sale_add_permission_active)
                 <li><a href="{{route('sale.pos')}}">POS</a></li>
                 <li id="sale-create-menu"><a href="{{route('sales.create')}}">{{trans('file.Add Sale')}}</a></li>
