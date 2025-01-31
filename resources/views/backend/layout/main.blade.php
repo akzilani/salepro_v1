@@ -208,7 +208,7 @@
               $category_permission_active = $role_has_permissions_list->where('name', 'category')->first();
               ?>
               @if($category_permission_active)
-              <li class="dropdown-item"><a data-toggle="modal" data-target="#category-modal">{{__('file.Add Category')}}</a></li>
+              <li class="dropdown-item"><a data-toggle="modal" data-target="#category-modal">Add Category </a></li>
               @endif
               <?php
               $add_permission_active = $role_has_permissions_list->where('name', 'products-add')->first();
@@ -471,7 +471,7 @@
         <div class="modal-content">
           {!! Form::open(['route' => 'category.store', 'method' => 'post', 'files' => true, 'id' => 'category-form']) !!}
           <div class="modal-header">
-            <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Add Category')}}</h5>
+            <h5 id="exampleModalLabel" class="modal-title">Add Style </h5>
             <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
           </div>
           <div class="modal-body">
@@ -486,7 +486,7 @@
                 <input type="file" name="image" class="form-control">
               </div>
               <div class="col-md-6 form-group">
-                <label>{{trans('file.Parent Category')}}</label>
+                <label>Parent Style </label>
                 <select name="parent_id" class="form-control selectpicker" id="parent">
                   <option value="">No {{trans('file.parent')}}</option>
                   @foreach($categories_list as $category)
