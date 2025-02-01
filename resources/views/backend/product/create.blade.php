@@ -336,6 +336,12 @@
                                         <textarea name="product_details" class="form-control" rows="3"></textarea>
                                     </div>
                                 </div>
+
+                                <div class="form-group mt-3">
+                                    <button type="submit" id="submit-btn" class="btn btn-primary">{{trans('file.add_product')}}</button>
+                                </div>
+                                <div style="display: none;" class="">
+                                    
                                 <div class="col-md-12 mt-3" id="variant-option">
                                     <h5><input name="is_variant" type="checkbox" id="is-variant" value="1">&nbsp; {{trans('file.This product has variant')}}</h5>
                                 </div>
@@ -488,9 +494,163 @@
                                 </div>
                             </div>
                             @endif
-                            <div class="form-group mt-3">
-                                <button type="submit" id="submit-btn" class="btn btn-primary">{{trans('file.add_product')}}</button>
+                                </div>
+<!--                                 
+                                <div class="col-md-12 mt-3" id="variant-option">
+                                    <h5><input name="is_variant" type="checkbox" id="is-variant" value="1">&nbsp; {{trans('file.This product has variant')}}</h5>
+                                </div>
+                                <div class="col-md-12" id="variant-section">
+                                    <div id="variant-input-section">
+                                        <div class="row">
+                                            <div class="col-md-4 form-group mt-2">
+                                                <label>{{trans('file.Option')}} *</label>
+                                                <input type="text" name="variant_option[]" class="form-control variant-field" placeholder="Size, Color etc...">
+                                            </div>
+                                            <div class="col-md-7 form-group mt-2">
+                                                <label>{{trans('file.Value')}} *</label>
+                                                <input type="text" name="variant_value[]" class="type-variant form-control variant-field">
+                                            </div>
+                                            <div class="col-sm-1 form-group mt-2" style="display:flex;flex-direction:column;align-items:center;justify-content:end;">
+                                                <button type="button" class="delVarOption btn btn-danger btn-sm mr-3"><i class="dripicons-cross"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <button type="button" class="btn btn-info add-more-variant"><i class="dripicons-plus"></i> {{trans('file.Add More Variant')}}</button>
+                                    </div>
+                                    <div class="table-responsive ml-2">
+                                        <table id="variant-table" class="table table-hover variant-list">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{trans('file.name')}}</th>
+                                                    <th>{{trans('file.Item Code')}}</th>
+                                                    <th>{{trans('file.Additional Cost')}}</th>
+                                                    <th>{{trans('file.Additional Price')}}</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-2" id="diffPrice-option">
+                                    <h5><input name="is_diffPrice" type="checkbox" id="is-diffPrice" value="1">&nbsp; {{trans('file.This product has different price for different warehouse')}}</h5>
+                                </div>
+                                <div class="col-md-6" id="diffPrice-section">
+                                    <div class="table-responsive ml-2">
+                                        <table id="diffPrice-table" class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>{{trans('file.Warehouse')}}</th>
+                                                    <th>{{trans('file.Price')}}</th>
+                                                </tr>
+                                                @foreach($lims_warehouse_list as $warehouse)
+                                                <tr>
+                                                    <td>
+                                                        <input type="hidden" name="warehouse_id[]" value="{{$warehouse->id}}">
+                                                        {{$warehouse->name}}
+                                                    </td>
+                                                    <td><input type="number" name="diff_price[]" class="form-control"></td>
+                                                </tr>
+                                                @endforeach
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-3" id="batch-option">
+                                    <h5><input name="is_batch" type="checkbox" id="is-batch" value="1">&nbsp; {{trans('file.This product has batch and expired date')}}</h5>
+                                </div>
+                                <div class="col-md-12 mt-3" id="imei-option">
+                                    <h5><input name="is_imei" type="checkbox" id="is-imei" value="1">&nbsp; {{trans('file.This product has IMEI or Serial numbers')}}</h5>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <h5><input name="promotion" type="checkbox" id="promotion" value="1">&nbsp; {{trans('file.Add Promotional Price')}}</h5>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-4" id="promotion_price">
+                                            <label>{{trans('file.Promotional Price')}}</label>
+                                            <input type="number" name="promotion_price" class="form-control" step="any" />
+                                        </div>
+                                        <div class="col-md-4" id="start_date">
+                                            <div class="form-group">
+                                                <label>{{trans('file.Promotion Starts')}}</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="dripicons-calendar"></i></div>
+                                                    </div>
+                                                    <input type="text" name="starting_date" id="starting_date" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" id="last_date">
+                                            <div class="form-group">
+                                                <label>{{trans('file.Promotion Ends')}}</label>
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="dripicons-calendar"></i></div>
+                                                    </div>
+                                                    <input type="text" name="last_date" id="ending_date" class="form-control" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @if (\Schema::hasColumn('products', 'woocommerce_product_id'))
+                                <div class="col-md-12 mt-3">
+                                    <h5><input name="is_sync_disable" type="checkbox" id="is_sync_disable" value="1">&nbsp; {{trans('file.Disable Woocommerce Sync')}}</h5>
+                                </div>
+                                @endif
+
+                                @if(in_array('ecommerce',explode(',',$general_setting->modules)))
+                                <div class="col-md-12 mt-3">
+                                    <h5><input name="is_online" type="checkbox" id="is_online" value="1" checked>&nbsp; {{trans('file.Sell Online')}}</h5>
+                                </div>
+                                <div class="col-md-12 mt-3">
+                                    <h5><input name="in_stock" type="checkbox" id="in_stock" value="1" checked>&nbsp; {{trans('file.In Stock')}}</h5>
+                                </div>
+                                <div class="col-md-12 mt-3 track_inventory" style="display:none">
+                                    <h5><input name="track_inventory" type="checkbox" id="track_inventory" value="0">&nbsp; {{trans('file.Track Inventory')}}</h5>
+                                </div>
+                                @endif
                             </div>
+                            @if(in_array('ecommerce',explode(',',$general_setting->modules)))
+                            <div class="row">
+                                <div class="col-12 mt-3">
+                                    <div class="form-group">
+                                        <label>{{trans('file.Product Tags')}}</strong> </label>
+                                        <input type="text" name="tags" class="form-control" value="">
+                                        <span class="validation-msg" id="tags-error"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <br/>
+                                    <h6>For SEO</h6>
+                                    <br>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>{{ __('Meta Title') }} *</label>
+                                    <input type="text" name="meta_title" class="form-control" value="">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>{{ __('Meta Description') }} *</label>
+                                    <input type="text" name="meta_description" class="form-control" value="">
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label>{{trans('file.Products')}}</label>
+                                    <input type="text" id="search_products" class="form-control">
+                                    <div class="search_result"></div>
+                                    <h4 class="mt-5 mb-3">Selected Items</h4>
+                                    <div class="selected_items"></div>
+                                    <textarea class="selected_ids hidden no-tiny" name="products"></textarea>
+                                </div>
+                            </div>
+                            @endif -->
+                            <!-- <div class="form-group mt-3">
+                                <button type="submit" id="submit-btn" class="btn btn-primary">{{trans('file.add_product')}}</button>
+                            </div> -->
                         </form>
                     </div>
                 </div>
