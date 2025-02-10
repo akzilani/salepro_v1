@@ -324,14 +324,9 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        //return $request;
+        return $request;
         $this->validate($request, [
-            'code' => [
-                'max:255',
-                    Rule::unique('products')->where(function ($query) {
-                    return $query->where('is_active', 1);
-                }),
-            ],
+            'code' => 'max:255',
             'name' => [
                 'max:255',
                     Rule::unique('products')->where(function ($query) {
@@ -339,6 +334,10 @@ class ProductController extends Controller
                 }),
             ]
         ]);
+
+      
+
+
         $data = $request->except('image', 'file');
 
         if(isset($data['is_variant'])) {
@@ -439,8 +438,9 @@ class ProductController extends Controller
                 $data['is_sync_disable'] = null;
         //return $data;
         $lims_product_data = Product::create($data);
+        
         //inserting custom field data
-        $custom_field_data = [];
+        $custom_field_data = []; 
         $custom_fields = CustomField::where('belongs_to', 'product')->select('name', 'type')->get();
         foreach ($custom_fields as $type => $custom_field) {
             $field_name = str_replace(' ', '_', strtolower($custom_field->name));

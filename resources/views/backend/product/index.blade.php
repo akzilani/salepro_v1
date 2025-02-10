@@ -61,14 +61,14 @@
                     <th class="not-exported"></th>
                     <th>{{trans('file.Image')}}</th>
                     <th>{{trans('file.name')}}</th>
-                    <th>{{trans('file.Code')}}</th>
-                    <th>{{trans('file.Brand')}}</th>
-                    <th>{{trans('file.category')}}</th>
-                    <th>{{trans('file.Quantity')}}</th>
+                    <th> PO Number </th>
+                    <th> Buyer Name </th>
+                    <th> Style Name </th>
+                    <th> Balance Qty </th>
                     <th>{{trans('file.Unit')}}</th>
                     <th>{{trans('file.Price')}}</th>
-                    <th>{{trans('file.Cost')}}</th>
-                    <th>{{trans('file.Stock Worth (Price/Cost)')}}</th>
+                    <th>Add. Cost</th>
+                    <th> Asset Amout (Price/Cost) </th>
                     @foreach($custom_fields as $fieldName)
                         <th>{{$fieldName}}</th>
                     @endforeach
