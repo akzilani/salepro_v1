@@ -69,6 +69,7 @@
                     <th>{{trans('file.Price')}}</th>
                     <th>Add. Cost</th>
                     <th> Asset Amout (Price/Cost) </th>
+                    <th> Value One </th>
                     @foreach($custom_fields as $fieldName)
                         <th>{{$fieldName}}</th>
                     @endforeach
@@ -203,12 +204,51 @@
         return false;
     }
 
-    var columns = [{"data": "key"},{"data": "image"},{"data": "name"},{"data": "code"},{"data": "brand"},{"data": "category"},{"data": "qty"},{"data": "unit"},{"data": "price"},{"data": "cost"},{"data": "stock_worth"}];
-    var field_name = <?php echo json_encode($field_name) ?>;
-    for(i = 0; i < field_name.length; i++) {
-        columns.push({"data": field_name[i]});
-    }
-    columns.push({"data": "options"});
+     var columns = [{"data": "key"},{"data": "image"},{"data": "name"},{"data": "code"},{"data": "brand"},{"data": "category"},{"data": "qty"},{"data": "unit"},{"data": "price"},{"data": "cost"},{"data": "stock_worth"},{"data": "rack_no"}];
+    // var field_name = <?php echo json_encode($field_name) ?>; 
+
+    // // return field_name;
+    // for(i = 0; i < field_name.length; i++) {
+    //     console.log('test data:', field_name[i]); 
+    //     columns.push({"data": field_name[i]});
+    // }
+    // columns.push({"data": "options"});
+    
+//     var columns = [
+//     {"data": "key"},
+//     {"data": "image"},
+//     {"data": "name"},
+//     {"data": "code"},
+//     {"data": "brand"},
+//     {"data": "category"},
+//     {"data": "qty"},
+//     {"data": "unit"},
+//     {"data": "price"},
+//     {"data": "cost"},
+//     {"data": "stock_worth"}
+// ];
+
+// Get dynamic fields from PHP
+var field_name = <?php echo json_encode($field_name); ?>;
+
+// Debug log (optional)
+console.log('Dynamic Fields:', field_name);
+
+// Loop to dynamically add fields
+for (var i = 0; i < field_name.length; i++) {
+    console.log('Adding dynamic field:', field_name[i]);
+    columns.push({"data": field_name[i]});
+}
+
+// Add final options column
+columns.push({"data": "options"});
+
+// Optional: Log final columns array for debugging
+console.log('Final columns array:', columns);
+
+
+
+
 
     var warehouse = [];
     var variant = [];

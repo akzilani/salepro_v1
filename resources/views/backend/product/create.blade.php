@@ -205,6 +205,12 @@
                                         <input type="number" name="alert_quantity" class="form-control" step="any">
                                     </div>
                                 </div>
+                                <div id="value_one" class="col-md-4">
+                                    <div class="form-group">
+                                        <label> Value One </label>
+                                        <input type="text" name="value_one" class="form-control" >
+                                    </div>
+                                </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Tax')}}</label>
@@ -230,56 +236,64 @@
                                         </select>
                                     </div>
                                 </div>
-                                @foreach($custom_fields as $field)
-                                @if(!$field->is_admin || \Auth::user()->role_id == 1)
-                                    <div class="{{'col-md-'.$field->grid_value}}">
-                                        <div class="form-group">
-                                            <label>{{$field->name}}</label>
-                                            @if($field->type == 'text')
-                                                <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
-                                            @elseif($field->type == 'number')
-                                                <input type="number" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
-                                            @elseif($field->type == 'textarea')
-                                                <textarea rows="5" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif></textarea>
-                                            @elseif($field->type == 'checkbox')
-                                                <br>
-                                                <?php $option_values = explode(",", $field->option_value); ?>
-                                                @foreach($option_values as $value)
-                                                    <label>
-                                                        <input type="checkbox" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
-                                                    </label>
-                                                    &nbsp;
-                                                @endforeach
-                                            @elseif($field->type == 'radio_button')
-                                                <br>
-                                                <?php $option_values = explode(",", $field->option_value); ?>
-                                                @foreach($option_values as $value)
-                                                    <label class="radio-inline">
-                                                        <input type="radio" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
-                                                    </label>
-                                                    &nbsp;
-                                                @endforeach
-                                            @elseif($field->type == 'select')
-                                                <?php $option_values = explode(",", $field->option_value); ?>
-                                                <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}" @if($field->is_required){{'required'}}@endif>
-                                                    @foreach($option_values as $value)
-                                                        <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
-                                                    @endforeach
-                                                </select>
-                                            @elseif($field->type == 'multi_select')
-                                                <?php $option_values = explode(",", $field->option_value); ?>
-                                                <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" @if($field->is_required){{'required'}}@endif multiple>
-                                                    @foreach($option_values as $value)
-                                                        <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
-                                                    @endforeach
-                                                </select>
-                                            @elseif($field->type == 'date_picker')
-                                                <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control date" @if($field->is_required){{'required'}}@endif>
-                                            @endif
-                                        </div>
-                                    </div>
-                                @endif
-                            @endforeach
+                                
+                             
+                                
+
+@foreach($custom_fields as $field)
+
+    @if(!$field->is_admin || \Auth::user()->role_id == 1)
+        <div class="{{'col-md-'.$field->grid_value}}">
+            <div class="form-group">
+                <label>{{$field->name}}</label>
+                @if($field->type == 'text')
+                    <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
+                @elseif($field->type == 'number')
+                    <input type="number" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
+                @elseif($field->type == 'textarea')
+                    <textarea rows="5" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif></textarea>
+                @elseif($field->type == 'checkbox')
+                    <br>
+                    <?php $option_values = explode(",", $field->option_value); ?>
+                    @foreach($option_values as $value)
+                        <label>
+                            <input type="checkbox" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
+                        </label>
+                        &nbsp;
+                    @endforeach
+                @elseif($field->type == 'radio_button')
+                    <br>
+                    <?php $option_values = explode(",", $field->option_value); ?>
+                    @foreach($option_values as $value)
+                        <label class="radio-inline">
+                            <input type="radio" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
+                        </label>
+                        &nbsp;
+                    @endforeach
+                @elseif($field->type == 'select')
+                    <?php $option_values = explode(",", $field->option_value); ?>
+                    <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}" @if($field->is_required){{'required'}}@endif>
+                        @foreach($option_values as $value)
+                            <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
+                        </select>
+                    @endforeach
+                @elseif($field->type == 'multi_select')
+                    <?php $option_values = explode(",", $field->option_value); ?>
+                    <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" @if($field->is_required){{'required'}}@endif multiple>
+                        @foreach($option_values as $value)
+                            <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
+                        </select>
+                    @endforeach
+                @elseif($field->type == 'date_picker')
+                    <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control date" @if($field->is_required){{'required'}}@endif>
+                @endif
+            </div>
+        </div>
+    @endif
+    
+@endforeach
+
+
                                 <div class="col-md-4">
                                     <div class="form-group mt-3">
                                         <input type="checkbox" name="is_initial_stock" value="1">&nbsp;
@@ -1685,15 +1699,16 @@
                         var file = $('#file')[0].files;
                         if(file.length > 0)
                             formData.append('file',file[0]);
-
+                     console.log(response);
                         $.ajax({
+                            
                             type:'POST',
                             url:'{{route('products.store')}}',
                             data: formData,
                             contentType: false,
                             processData: false,
                             success:function(response) {
-                                //console.log(response);
+                                 
                                 location.href = '../products';
                             },
                             error:function(response) {
