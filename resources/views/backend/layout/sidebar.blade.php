@@ -44,15 +44,15 @@
                 $index_permission_active = $role_has_permissions_list->where('name', 'purchases-index')->first();
             ?>
             @if($index_permission_active)
-            <li><a href="#purchase" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-card"></i><span>{{trans('file.Purchase')}}</span></a>
+            <li><a href="#purchase" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-card"></i><span> Store In</span></a>
             <ul id="purchase" class="collapse list-unstyled ">
-                <li id="purchase-list-menu"><a href="{{route('purchases.index')}}">{{trans('file.Purchase List')}}</a></li>
+                <li id="purchase-list-menu"><a href="{{route('purchases.index')}}">Product In Details</a></li>
                 <?php
                 $add_permission_active = $role_has_permissions_list->where('name', 'purchases-add')->first();
                 ?>
                 @if($add_permission_active)
-                <li id="purchase-create-menu"><a href="{{route('purchases.create')}}">{{trans('file.Add Purchase')}}</a></li>
-                <li id="purchase-import-menu"><a href="{{url('purchases/purchase_by_csv')}}">{{trans('file.Import Purchase By CSV')}}</a></li>
+                <li id="purchase-create-menu"><a href="{{route('purchases.create')}}">Product In </a></li>
+                <li id="purchase-import-menu"><a href="{{url('purchases/purchase_by_csv')}}"> Product In By CSV</a></li>
                 @endif
             </ul>
             </li>
@@ -71,15 +71,15 @@
                 $sale_add_permission_active = $role_has_permissions_list->where('name', 'sales-add')->first();
             ?>
             @if($sale_index_permission_active || $packing_slip_challan_active || $gift_card_permission_active || $coupon_permission_active || $delivery_permission_active)
-            <li><a href="#sale" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-cart"></i><span>{{trans('file.Sale')}}</span></a>
+            <li><a href="#sale" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-cart"></i><span> Store Out</span></a>
             <ul id="sale" class="collapse list-unstyled ">
                 @if($sale_index_permission_active)
                 <li id="sale-list-menu"><a href="{{route('sales.index')}}">{{trans('file.Sale List')}}</a></li>
                 @endif
                 @if($sale_add_permission_active)
-                <li><a href="{{route('sale.pos')}}">POS</a></li>
+                <li><a href="{{route('sale.pos')}}"> Finishing Goods Out</a></li>
                 <li id="sale-create-menu"><a href="{{route('sales.create')}}">{{trans('file.Add Sale')}}</a></li>
-                <li id="sale-import-menu"><a href="{{url('sales/sale_by_csv')}}">{{trans('file.Import Sale By CSV')}}</a></li>
+                <li id="sale-import-menu"><a href="{{url('sales/sale_by_csv')}}"> Product Out By CSV </a></li>
                 @endif
                 @if($packing_slip_challan_active)
                 <li id="packing-list-menu"><a href="{{route('packingSlip.index')}}">{{trans('file.Packing Slip List')}}</a></li>
