@@ -1698,8 +1698,8 @@
                         });
                         var file = $('#file')[0].files;
                         if(file.length > 0)
+                       // console.log('Hdf');
                             formData.append('file',file[0]);
-                     console.log(response);
                         $.ajax({
                             
                             type:'POST',
@@ -1708,8 +1708,9 @@
                             contentType: false,
                             processData: false,
                             success:function(response) {
+                                 //console.log(response);
                                  
-                                location.href = '../products';
+                                 location.href = '../products';
                             },
                             error:function(response) {
                               if(response.responseJSON.errors.name) {

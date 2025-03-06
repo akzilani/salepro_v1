@@ -321,7 +321,6 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        return $request;
         $this->validate($request, [
             'code' => 'max:255',
             'name' => [
@@ -1489,17 +1488,48 @@ class ProductController extends Controller
 
             // Read CSV header
             $header = fgetcsv($file);
+            if (!$header) {
+                fclose($file);
+                return redirect()->back()->with('message', 'CSV file is empty or invalid.');
+            }
+            $escapedHeader = [];
+            foreach ($header as $key => $value) {
+                $lheader = strtolower(trim($value));
+                $escapedItem = preg_replace('/[^a-z]/', '_', $lheader);
+                $escapedHeader[] = $escapedItem;
+            }
+            
+            
 
             $csvData = [];
-
+            $index = 0;
             while (($row = fgetcsv($file)) !== false) {
                 // Combine headers with row data
-                $rowData = array_combine($header, $row);
-
+                $rowData = array_combine($escapedHeader, $row);
                 // Ensure valid data before processing
                 if ($rowData === false) {
                     continue;
                 }
+
+
+                // Handle brand
+                $brand_id = null;
+                if (isset($data['brand']) && $data['brand'] !== 'N/A' && $rowData['brand'] !== '') {
+                    $lims_brand_data = Brand::firstOrCreate(['title' => $rowData['brand'], 'is_active' => true]);
+                    $brand_id = $lims_brand_data->id;
+                }
+
+                // Handle category
+                $lims_category_data = Category::firstOrCreate(['name' => $rowData['category_id'], 'is_active' => true]);
+
+                // $lims_category_data = Product::firstOrCreate(['invoice_(challan)_no' => $data['product']]);
+                // Handle unit
+                $lims_unit_data = Unit::where('id', $rowData['unit_id'])->first();
+                if (!$lims_unit_data) {
+                    fclose($file);
+                    return redirect()->back()->with('not_permitted', 'Unit code does not exist in the database.');
+                }
+
 
                 // Check if the product exists, or create a new one
                 $product = Product::firstOrNew([
@@ -1508,16 +1538,112 @@ class ProductController extends Controller
                 ]);
 
                 // You can assign more attributes before saving
-                $product->fill($rowData);
+                // $product->fill($rowData);
+                $customField = CustomField::where('belongs_to', 'product')->pluck('name');
+                $escapedCustomField = [];
+                foreach ($customField as $key => $value) {
+                    $lheader = strtolower(trim($value));
+                    $escapedItem = preg_replace('/[^a-z]/', '_', $lheader);
+                    $escapedCustomField[] = $escapedItem;
+                }
+                $productKey = new Product();
+                $getProductKey = $productKey->getFillable(); // Get fillable columns from Product model
+                $customFieldData = collect($escapedCustomField);
+                $mergedCustomFields = array_merge($getProductKey, $customFieldData->toArray());
+
+                foreach ($mergedCustomFields as $columnName) { // Loop through fillable columns
+                    if (in_array($columnName, $escapedHeader)) { // Check if column exists in header
+                        if (isset($rowData[$columnName])) { // Check if column exists in row data
+                            $product->$columnName = $rowData[$columnName]; // Store the value
+                        }
+                    }
+                }
+
+
                 $product->barcode_symbology = 'C128';
-                $product->category_id = 1;
-                $product->unit_id = 1;
-                $product->purchase_unit_id = 1;
-                $product->sale_unit_id = 1;
+                $product->brand_id = $brand_id;
+                $product->category_id = $lims_category_data->id;
+                $product->unit_id = $lims_unit_data->id;
+                $product->purchase_unit_id = $lims_unit_data->id;
+                $product->sale_unit_id = $lims_unit_data->id;
+                if (in_array('ecommerce', explode(',', config('addons')))) {
+                    $product->slug  = Str::slug($rowData['name']);
+                    $product->in_stock = true;
+                }
                 $product->save();
 
                 // Store structured data
                 $csvData[] = $rowData;
+
+
+                // Handle variants
+                $warehouse_ids = Warehouse::where('is_active', true)->pluck('id');
+                if (!empty($rowData['variant_value']) && !empty($rowData['variant_name'])) {
+                    $variant_option = [];
+                    $variant_value = [];
+                    $variantInfo = explode(",", $rowData['variant_value']);
+
+                    foreach ($variantInfo as $key => $info) {
+                        if (!strpos($info, "[")) {
+                            fclose($file);
+                            return redirect()->back()->with('message', 'Invalid variant value format.');
+                        }
+                        $variant_option[] = strtok($info, "[");
+                        $variant_value[] = str_replace("/", ",", substr($info, strpos($info, "[") + 1, (strpos($info, "]") - strpos($info, "[") - 1)));
+                    }
+
+                    $product->variant_option = json_encode($variant_option);
+                    $product->variant_value = json_encode($variant_value);
+                    $product->is_variant = true;
+                    $product->save();
+
+                    $variant_names = explode(",", $rowData['variant_name']);
+                    $item_codes = explode(",", $rowData['item_code']);
+                    $additional_costs = explode(",", $rowData['additional_cost']);
+                    $additional_prices = explode(",", $rowData['additional_price']);
+
+                    $productVariants = [];
+                    $productWarehouses = [];
+
+                    foreach ($variant_names as $key => $variant_name) {
+                        $variant = Variant::firstOrCreate(['name' => $variant_name]);
+
+                        $productVariants[] = [
+                            'product_id' => $product->id,
+                            'variant_id' => $variant->id,
+                            'position' => $key + 1,
+                            'item_code' => $item_codes[$key] ?? $variant_name . '-' . $rowData['code'],
+                            'additional_cost' => $additional_costs[$key] ?? 0,
+                            'additional_price' => $additional_prices[$key] ?? 0,
+                            'qty' => 0,
+                        ];
+
+                        foreach ($warehouse_ids as $warehouse_id) {
+                            $productWarehouses[] = [
+                                'product_id' => $product->id,
+                                'variant_id' => $variant->id,
+                                'warehouse_id' => $warehouse_id,
+                                'qty' => 0,
+                            ];
+                        }
+                    }
+
+                    ProductVariant::insert($productVariants);
+                    if (config('without_stock') === 'yes') {
+                        Product_Warehouse::insert($productWarehouses);
+                    }
+                } elseif (config('without_stock') === 'yes') {
+                    $productWarehouses = [];
+                    foreach ($warehouse_ids as $warehouse_id) {
+                        $productWarehouses[] = [
+                            'product_id' => $product->id,
+                            'warehouse_id' => $warehouse_id,
+                            'qty' => 0,
+                        ];
+                    }
+                    Product_Warehouse::insert($productWarehouses);
+                }
+                $index++;
             }
 
             fclose($file);
