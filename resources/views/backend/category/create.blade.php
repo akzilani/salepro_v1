@@ -27,7 +27,7 @@
                     <th>{{trans('file.Parent Category')}}</th>
                     <th>{{trans('file.Number of Product')}}</th>
                     <th>{{trans('file.Stock Quantity')}}</th>
-                    <th>{{trans('file.Stock Worth (Price/Cost)')}}</th>
+                    <th> Stock Worth (Price) </th>
                     <th class="not-exported">{{trans('file.action')}}</th>
                 </tr>
             </thead>

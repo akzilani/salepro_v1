@@ -20,7 +20,7 @@
 <section>
     <div class="container-fluid">
         @if(in_array("products-add", $all_permission))
-            <a href="{{route('products.create')}}" class="btn btn-info add-product-btn"><i class="dripicons-plus"></i> {{__('file.add_product')}}</a>
+            <a href="{{route('addNewProduct')}}" class="btn btn-info add-product-btn"><i class="dripicons-plus"></i> {{__('file.add_product')}}</a>
             <a href="#" data-toggle="modal" data-target="#importProduct" class="btn btn-primary add-product-btn"><i class="dripicons-copy"></i> {{__('file.import_product')}}</a>
 
         @endif
@@ -31,7 +31,7 @@
         <div class="card mt-3">
             <h3 class="text-center mt-3">{{trans('file.Filter Products')}}</h3>
             <div class="card-body">
-                {!! Form::open(['route' => 'products.index', 'method' => 'get']) !!}
+                {!! Form::open(['route' => 'currentStock', 'method' => 'get']) !!}
                 <div class="row">
                     <div class="col-md-3 offset-3 @if(\Auth::user()->role_id > 2){{'d-none'}}@endif">
                         <div class="form-group">

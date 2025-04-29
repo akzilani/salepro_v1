@@ -214,13 +214,13 @@
               $add_permission_active = $role_has_permissions_list->where('name', 'products-add')->first();
               ?>
               @if($add_permission_active)
-              <li class="dropdown-item"><a href="{{route('products.create')}}">{{__('file.add_product')}}</a></li>
+              <li class="dropdown-item"><a href="{{route('addNewProduct')}}">{{__('file.add_product')}}</a></li>
               @endif
               <?php
               $add_permission_active = $role_has_permissions_list->where('name', 'purchases-add')->first();
               ?>
               @if($add_permission_active)
-              <li class="dropdown-item"><a href="{{route('purchases.create')}}">{{trans('file.Add Purchase')}}</a></li>
+              <li class="dropdown-item"><a href="{{route('product.in')}}">{{trans('file.Add Purchase')}}</a></li>
               @endif
               <?php
               $sale_add_permission_active = $role_has_permissions_list->where('name', 'sales-add')->first();

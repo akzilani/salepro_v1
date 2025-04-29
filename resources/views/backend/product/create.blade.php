@@ -60,6 +60,7 @@
                                         <span class="validation-msg" id="code-error"></span>
                                     </div>
                                 </div>
+                                {{--
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Barcode Symbology')}} *</strong> </label>
@@ -75,6 +76,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                --}}
                                 <div id="digital" class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Attach File')}} *</strong> </label>
@@ -211,6 +213,7 @@
                                         <input type="text" name="value_one" class="form-control" >
                                     </div>
                                 </div>
+                                {{--
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Tax')}}</label>
@@ -226,7 +229,8 @@
                                     </div>
                                     </div>
                                 </div>
-
+                                --}}
+                                {{--
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Tax Method')}}</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.Exclusive: Poduct price = Actual product price + Tax. Inclusive: Actual product price = Product price - Tax')}}"></i>
@@ -236,7 +240,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+                                --}}
                              
                                 
 
@@ -301,6 +305,7 @@
                                         <p class="italic">{{trans('file.This feature will not work for product with variants and batches')}}</p>
                                     </div>
                                 </div>
+                                {{--
                                 <div class="col-md-4">
                                     <div class="form-group mt-3">
                                         <input type="checkbox" name="featured" value="1">&nbsp;
@@ -308,12 +313,15 @@
                                         <p class="italic">{{trans('file.Featured product will be displayed in POS')}}</p>
                                     </div>
                                 </div>
+                                --}}
+                                {{--
                                 <div class="col-md-4">
                                     <div class="form-group mt-3">
                                         <input type="checkbox" name="is_embeded" value="1">&nbsp;
                                         <label>{{trans('file.Embedded Barcode')}} <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.Check this if this product will be used in weight scale machine.')}}"></i></label>
                                     </div>
                                 </div>
+                                --}}
                                 <div class="col-md-6" id="initial-stock-section">
                                     <div class="table-responsive ml-2">
                                         <table class="table table-hover">
@@ -847,7 +855,7 @@
     $('[data-toggle="tooltip"]').tooltip();
 
     $('#genbutton').on("click", function(){
-      $.get('gencode', function(data){
+      $.get('/products/gencode', function(data){
         $("input[name='code']").val(data);
       });
     });
@@ -1467,7 +1475,7 @@
 
     function populate_category(unitID){
         $.ajax({
-            url: 'saleunit/'+unitID,
+            url: '/products/saleunit/'+unitID,
             type: "GET",
             dataType: "json",
             success:function(data) {
@@ -1710,7 +1718,7 @@
                             success:function(response) {
                                  //console.log(response);
                                  
-                                 location.href = '../products';
+                                 location.href = '../current-stock';
                             },
                             error:function(response) {
                               if(response.responseJSON.errors.name) {
@@ -1774,7 +1782,7 @@
             }
         },
         successmultiple: function (file, response) {
-            location.href = '../products';
+            location.href = '../current-stock';
             //console.log(file, response);
         },
         completemultiple: function (file, response) {

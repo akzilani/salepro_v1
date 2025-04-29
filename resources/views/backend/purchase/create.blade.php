@@ -3,6 +3,11 @@
   <div class="alert alert-danger alert-dismissible text-center"><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>{{ session()->get('not_permitted') }}</div>
 @endif
 <section class="forms">
+    <style>
+        .custom-dn {
+            display: none !important;
+        }
+    </style>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -77,7 +82,7 @@
                                             @endif
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 custom-dn">
                                         <div class="form-group">
                                             <label>{{trans('file.Currency')}} *</label>
                                             <select name="currency_id" id="currency-id" class="form-control selectpicker" data-toggle="tooltip" title="">
@@ -87,7 +92,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-2 custom-dn">
                                         <div class="form-group mb-0">
                                             <label>{{trans('file.Exchange Rate')}} *</label>
                                         </div>
@@ -166,13 +171,13 @@
                                                         <th>{{trans('file.name')}}</th>
                                                         <th>{{trans('file.Code')}}</th>
                                                         <th>{{trans('file.Quantity')}}</th>
-                                                        <th class="recieved-product-qty d-none">{{trans('file.Recieved')}}</th>
-                                                        <th>{{trans('file.Batch No')}}</th>
-                                                        <th>{{trans('file.Expired Date')}}</th>
-                                                        <th>{{trans('file.Net Unit Cost')}}</th>
-                                                        <th>{{trans('file.Discount')}}</th>
-                                                        <th>{{trans('file.Tax')}}</th>
-                                                        <th>{{trans('file.Subtotal')}}</th>
+                                                        <th class="recieved-product-qty d-none custom-dn">{{trans('file.Recieved')}}</th>
+                                                        <th class="custom-dn">{{trans('file.Batch No')}}</th>
+                                                        <th class="custom-dn">{{trans('file.Expired Date')}}</th>
+                                                        <th class="custom-dn">{{trans('file.Net Unit Cost')}}</th>
+                                                        <th class="custom-dn">{{trans('file.Discount')}}</th>
+                                                        <th class="custom-dn">{{trans('file.Tax')}}</th>
+                                                        <th class="custom-dn">{{trans('file.Subtotal')}}</th>
                                                         <th><i class="dripicons-trash"></i></th>
                                                     </tr>
                                                 </thead>
@@ -181,13 +186,13 @@
                                                 <tfoot class="tfoot active">
                                                     <th colspan="2">{{trans('file.Total')}}</th>
                                                     <th id="total-qty">0</th>
-                                                    <th class="recieved-product-qty d-none"></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th></th>
-                                                    <th id="total-discount">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
-                                                    <th id="total-tax">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
-                                                    <th id="total">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
+                                                    <th class="recieved-product-qty d-none custom-dn"></th>
+                                                    <th class="custom-dn"></th>
+                                                    <th class="custom-dn"></th>
+                                                    <th class="custom-dn"></th>
+                                                    <th id="total-discount" class="custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
+                                                    <th id="total-tax" class="custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
+                                                    <th id="total" class="custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
                                                     <th><i class="dripicons-trash"></i></th>
                                                 </tfoot>
                                             </table>
@@ -230,7 +235,7 @@
                                     </div>
                                 </div>
                                 <div class="row mt-3">
-                                    <div class="col-md-4">
+                                    <div class="col-md-4 custom-dn">
                                         <div class="form-group">
                                             <label>{{trans('file.Order Tax')}}</label>
                                             <select class="form-control" name="order_tax_rate">
@@ -285,13 +290,13 @@
             <td><strong>{{trans('file.Total')}}</strong>
                 <span class="pull-right" id="subtotal">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
             </td>
-            <td><strong>{{trans('file.Order Tax')}}</strong>
+            <td class="custom-dn"><strong>{{trans('file.Order Tax')}}</strong>
                 <span class="pull-right" id="order_tax">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
             </td>
-            <td><strong>{{trans('file.Order Discount')}}</strong>
+            <td class="custom-dn"><strong>{{trans('file.Order Discount')}}</strong>
                 <span class="pull-right" id="order_discount">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
             </td>
-            <td><strong>{{trans('file.Shipping Cost')}}</strong>
+            <td class="custom-dn"><strong>{{trans('file.Shipping Cost')}}</strong>
                 <span class="pull-right" id="shipping_cost">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
             </td>
             <td><strong>{{trans('file.grand total')}}</strong>
@@ -678,7 +683,7 @@
     function productSearch(data) {
         $.ajax({
             type: 'GET',
-            url: 'lims_product_search',
+            url: 'purchases/lims_product_search',
             data: {
                 data: data
             },
@@ -705,24 +710,24 @@
                     cols += '<td>' + data[1] + '</td>';
                     cols += '<td><input type="text" class="form-control qty" name="qty[]" value="1" required/></td>';
                     if($('select[name="status"]').val() == 1)
-                        cols += '<td class="recieved-product-qty d-none"><input type="text" class="form-control recieved" name="recieved[]" value="1" /></td>';
+                        cols += '<td class="recieved-product-qty d-none"><input type="text" class="form-control custom-dn recieved" name="recieved[]" value="1" /></td>';
                     else if($('select[name="status"]').val() == 2)
-                        cols += '<td class="recieved-product-qty"><input type="text" class="form-control recieved" name="recieved[]" value="1" /></td>';
+                        cols += '<td class="recieved-product-qty"><input type="text" class="form-control custom-dn recieved" name="recieved[]" value="1" /></td>';
                     else
-                        cols += '<td class="recieved-product-qty d-none"><input type="text" class="form-control recieved" name="recieved[]" value="0" /></td>';
+                        cols += '<td class="recieved-product-qty d-none"><input type="text" class="form-control custom-dn recieved" name="recieved[]" value="0" /></td>';
                     if(data[10]) {
-                        cols += '<td><input type="text" class="form-control batch-no" name="batch_no[]" required/></td>';
-                        cols += '<td><input type="text" class="form-control expired-date" name="expired_date[]" required/></td>';
+                        cols += '<td><input type="text" class="form-control custom-dn batch-no" name="batch_no[]" required/></td>';
+                        cols += '<td><input type="text" class="form-control custom-dn expired-date" name="expired_date[]" required/></td>';
                     }
                     else {
-                        cols += '<td><input type="text" class="form-control batch-no" name="batch_no[]" disabled/></td>';
-                        cols += '<td><input type="text" class="form-control expired-date" name="expired_date[]" disabled/></td>';
+                        cols += '<td><input type="text" class="form-control custom-dn batch-no" name="batch_no[]" disabled/></td>';
+                        cols += '<td><input type="text" class="form-control custom-dn expired-date" name="expired_date[]" disabled/></td>';
                     }
 
-                    cols += '<td class="net_unit_cost"></td>';
-                    cols += '<td class="discount">{{number_format(0, $general_setting->decimal, '.', '')}}</td>';
-                    cols += '<td class="tax"></td>';
-                    cols += '<td class="sub-total"></td>';
+                    cols += '<td class="net_unit_cost custom-dn"></td>';
+                    cols += '<td class="discount custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</td>';
+                    cols += '<td class="tax custom-dn"></td>';
+                    cols += '<td class="sub-total custom-dn"></td>';
                     cols += '<td><button type="button" class="ibtnDel btn btn-md btn-danger">{{trans("file.delete")}}</button></td>';
                     cols += '<input type="hidden" class="product-code" name="product_code[]" value="' + data[1] + '"/>';
                     cols += '<input type="hidden" class="product-id" name="product_id[]" value="' + data[9] + '"/>';

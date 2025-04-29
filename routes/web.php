@@ -178,8 +178,10 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function() {
     });
 
     // Need to check again
-    Route::resource('products',ProductController::class)->except([ 'show']);
+    Route::resource('products',ProductController::class)->except([ 'index','create','show']);
     Route::controller(ProductController::class)->group(function () {
+        Route::get('current-stock', 'index')->name('currentStock');
+        Route::get('add-new-product', 'create')->name('addNewProduct');
         Route::post('products/product-data', 'productData');
         Route::get('products/gencode', 'generateCode');
         Route::get('products/search', 'search');
@@ -230,12 +232,14 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function() {
      });
 
 
+   
+    Route::resource('category', CategoryController::class)->except(['index']);
     Route::controller(CategoryController::class)->group(function () {
+        Route::get('category-style', 'index')->name('category.style');
         Route::post('category/import', 'import')->name('category.import');
         Route::post('category/deletebyselection', 'deleteBySelection');
         Route::post('category/category-data', 'categoryData');
     });
-    Route::resource('category', CategoryController::class);
 
 
     Route::controller(BrandController::class)->group(function () {
@@ -416,8 +420,9 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function() {
             Route::post('deletebyselection', 'deleteBySelection');
         });
         Route::post('importpurchase', 'importPurchase')->name('purchase.import');
+        Route::get('product-in', 'create')->name('product.in');
     });
-    Route::resource('purchases', PurchaseController::class);
+    Route::resource('purchases', PurchaseController::class)->except(['create']);
 
 
 
