@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{trans('file.Product Code')}} *</strong> </label>
+                                        <label> PO Number *</strong> </label>
                                         <div class="input-group">
                                             <input type="text" name="code" class="form-control" id="code" aria-describedby="code" required>
                                             <div class="input-group-append">
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{trans('file.Brand')}}</strong> </label>
+                                        <label>Brand </label>
                                         <div class="input-group pos">
                                           <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
                                             @foreach($lims_brand_list as $brand)
@@ -124,7 +124,7 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>{{trans('file.category')}} *</strong> </label>
+                                        <label> Style * </label>
                                         <div class="input-group pos">
                                           <select name="category_id" required class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Category...">
                                             @foreach($lims_category_list as $category)
@@ -141,7 +141,7 @@
                                 <div id="unit" class="col-md-12">
                                     <div class="row ">
                                         <div class="col-md-4 form-group">
-                                                <label>{{trans('file.Product Unit')}} *</strong> </label>
+                                                <label>Product Unit  *</label>
                                                 <div class="input-group">
                                                   <select required class="form-control selectpicker" name="unit_id">
                                                     <option value="" disabled selected>Select Product Unit...</option>
@@ -301,7 +301,7 @@
                                 <div class="col-md-4">
                                     <div class="form-group mt-3">
                                         <input type="checkbox" name="is_initial_stock" value="1">&nbsp;
-                                        <label>{{trans('file.Initial Stock')}}</label>
+                                        <label>Initial Stock Qty</label>
                                         <p class="italic">{{trans('file.This feature will not work for product with variants and batches')}}</p>
                                     </div>
                                 </div>
