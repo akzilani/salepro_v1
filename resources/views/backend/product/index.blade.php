@@ -498,7 +498,7 @@ console.log('Final columns array:', columns);
                         'next': '<i class="dripicons-chevron-right"></i>'
                 }
             },
-            order:[['2', 'asc']],
+            order:[['1', 'desc']],
             'columnDefs': [
                 {
                     "orderable": false,

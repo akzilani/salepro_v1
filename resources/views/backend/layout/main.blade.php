@@ -347,14 +347,14 @@
             </li>
             @endif
             @php
-                $languages = array_map('basename', File::directories(resource_path('lang')));
+            $languages = array_map('basename', File::directories(resource_path('lang')));
             @endphp
             <li class="nav-item">
               <a rel="nofollow" title="{{trans('file.language')}}" data-toggle="tooltip" class="nav-link dropdown-item"><i class="dripicons-web"></i></a>
               <ul class="right-sidebar">
                 @foreach ($languages as $language)
                 <li>
-                    <a href="{{ url('language_switch/'.$language) }}" class="btn btn-link">{{ $language }}</a>
+                  <a href="{{ url('language_switch/'.$language) }}" class="btn btn-link">{{ $language }}</a>
                 </li>
                 @endforeach
               </ul>
@@ -467,26 +467,31 @@
 
     <!-- Category Modal -->
     <div id="category-modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+      <style>
+        .custom-dn {
+          display: none !important;
+        }
+      </style>
       <div role="document" class="modal-dialog">
         <div class="modal-content">
           {!! Form::open(['route' => 'category.store', 'method' => 'post', 'files' => true, 'id' => 'category-form']) !!}
           <div class="modal-header">
-          <h5 id="exampleModalLabel" class="modal-title">{{trans('file.Add Category')}}</h5>
+            <h5 id="exampleModalLabel" class="modal-title">Add Style</h5>
             <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
           </div>
           <div class="modal-body">
             <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
             <div class="row">
-              <div class="col-md-6 form-group">
+              <div class="col-md-12 form-group">
                 <label>{{trans('file.name')}} *</label>
                 {{Form::text('name',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type category name...'))}}
               </div>
-              <div class="col-md-6 form-group">
+              <div class="col-md-6 form-group custom-dn">
                 <label>{{trans('file.Image')}}</label>
                 <input type="file" name="image" class="form-control">
               </div>
-              <div class="col-md-6 form-group">
-              <label>{{trans('file.Parent Category')}}</label>
+              <div class="col-md-6 form-group custom-dn">
+                <label>{{trans('file.Parent Category')}}</label>
                 <select name="parent_id" class="form-control selectpicker" id="parent">
                   <option value="">No {{trans('file.parent')}}</option>
                   @foreach($categories_list as $category)
@@ -495,29 +500,29 @@
                 </select>
               </div>
               @if (\Schema::hasColumn('categories', 'woocommerce_category_id'))
-              <div class="col-md-6 form-group mt-4">
+              <div class="col-md-6 form-group mt-4 custom-dn">
                 <input class="mt-3" name="is_sync_disable" type="checkbox" id="is_sync_disable" value="1">&nbsp; {{trans('file.Disable Woocommerce Sync')}}
               </div>
               @endif
 
               @if(in_array('ecommerce',explode(',',$general_setting->modules)))
-              <div class="col-md-12 mt-3">
+              <div class="col-md-12 mt-3 custom-dn">
                 <h6><strong>{{ __('For Website') }}</strong></h6>
                 <hr>
               </div>
 
-              <div class="col-md-6 form-group">
+              <div class="col-md-6 form-group custom-dn">
                 <label>{{ __('Icon') }}</label>
                 <input type="file" name="icon" class="form-control">
               </div>
-              <div class="col-md-6 form-group">
+              <div class="col-md-6 form-group custom-dn">
                 <input class="mt-5" type="checkbox" name="featured" id="featured" value="1"> <label>{{ __('List on category dropdown') }}</label>
               </div>
               @endif
             </div>
 
             @if(in_array('ecommerce',explode(',',$general_setting->modules)))
-            <div class="row">
+            <div class="row custom-dn">
               <div class="col-md-12 mt-3">
                 <h6><strong>{{ __('For SEO') }}</strong></h6>
                 <hr>

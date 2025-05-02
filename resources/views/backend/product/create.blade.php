@@ -17,6 +17,11 @@
 
 @section('content')
 <section class="forms">
+    <style>
+        .custom-dn {
+            display: none !important;
+        }
+    </style>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -28,10 +33,10 @@
                         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
                         <form id="product-form">
                             <div class="row">
-                                <div class="col-md-4">
+                                <!-- <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Type')}} *</strong> </label>
-                                        <div class="input-group">
+                                        <div class="input-group pos">
                                             <select name="type" required class="form-control selectpicker" id="type">
                                                 <option value="standard">Standard</option>
                                                 <option value="combo">Combo</option>
@@ -40,11 +45,24 @@
                                             </select>
                                         </div>
                                     </div>
+                                </div> -->
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Product Type *</label>
+                                        <div class="input-group pos">
+                                          <select name="type" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Product Type..." required>
+                                            @foreach($lims_product_types as $type)
+                                                <option value="{{$type->id}}">{{$type->title}}</option>
+                                            @endforeach
+                                          </select>
+                                          <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#addProductType"><i class="dripicons-plus"></i></button>
+                                      </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Name')}} *</strong> </label>
-                                        <input type="text" name="name" class="form-control" id="name" aria-describedby="name" required>
+                                        <input type="text" name="name" class="form-control" id="name" placeholder="Product Name" aria-describedby="name" required>
                                         <span class="validation-msg" id="name-error"></span>
                                     </div>
                                 </div>
@@ -52,7 +70,7 @@
                                     <div class="form-group">
                                         <label> PO Number *</strong> </label>
                                         <div class="input-group">
-                                            <input type="text" name="code" class="form-control" id="code" aria-describedby="code" required>
+                                            <input type="text" name="code" class="form-control" id="code" placeholder="PO Number" aria-describedby="code" required>
                                             <div class="input-group-append">
                                                 <button id="genbutton" type="button" class="btn btn-sm btn-default" title="{{trans('file.Generate')}}"><i class="fa fa-refresh"></i></button>
                                             </div>
@@ -60,8 +78,7 @@
                                         <span class="validation-msg" id="code-error"></span>
                                     </div>
                                 </div>
-                                {{--
-                                <div class="col-md-4">
+                                <div class="col-md-4 custom-dn">
                                     <div class="form-group">
                                         <label>{{trans('file.Barcode Symbology')}} *</strong> </label>
                                         <div class="input-group">
@@ -76,7 +93,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                --}}
                                 <div id="digital" class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Attach File')}} *</strong> </label>
@@ -111,9 +127,9 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label>Brand </label>
+                                        <label>Buyers  Name </label>
                                         <div class="input-group pos">
-                                          <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Brand...">
+                                          <select name="brand_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Buyers  Name...">
                                             @foreach($lims_brand_list as $brand)
                                                 <option value="{{$brand->id}}">{{$brand->title}}</option>
                                             @endforeach
@@ -124,9 +140,9 @@
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
-                                        <label> Style * </label>
+                                        <label> Style Name * </label>
                                         <div class="input-group pos">
-                                          <select name="category_id" required class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Category...">
+                                          <select name="category_id" required class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Style Name...">
                                             @foreach($lims_category_list as $category)
                                                 <option value="{{$category->id}}">{{$category->name}}</option>
                                             @endforeach
@@ -138,9 +154,24 @@
                                       <span class="validation-msg"></span>
                                     </div>
                                 </div>
+                                <div class="col-md-4">
+                                    <label>Product Unit  *</label>
+                                    <div class="input-group">
+                                        <select required class="form-control selectpicker" name="unit_id">
+                                        <option value="" disabled selected>Select Product Unit...</option>
+                                        @foreach($lims_unit_list as $unit)
+                                            @if($unit->base_unit==null)
+                                                <option value="{{$unit->id}}">{{$unit->unit_name}}</option>
+                                            @endif
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                    <span class="validation-msg"></span>
+                                </div>
+                                
                                 <div id="unit" class="col-md-12">
                                     <div class="row ">
-                                        <div class="col-md-4 form-group">
+                                        <!-- <div class="col-md-4 form-group">
                                                 <label>Product Unit  *</label>
                                                 <div class="input-group">
                                                   <select required class="form-control selectpicker" name="unit_id">
@@ -153,15 +184,15 @@
                                                   </select>
                                               </div>
                                               <span class="validation-msg"></span>
-                                        </div>
-                                        <div class="col-md-4">
+                                        </div> -->
+                                        <div class="col-md-4 custom-dn">
                                                 <label>{{trans('file.Sale Unit')}}</strong> </label>
                                                 <div class="input-group">
                                                   <select class="form-control selectpicker" name="sale_unit_id">
                                                   </select>
                                               </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-4 custom-dn">
                                                 <div class="form-group">
                                                     <label>{{trans('file.Purchase Unit')}}</strong> </label>
                                                     <div class="input-group">
@@ -172,7 +203,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div id="cost" class="col-md-4">
+                                <div id="cost" class="col-md-4 custom-dn">
                                      <div class="form-group">
                                         <label>{{trans('file.Product Cost')}} *</strong> </label>
                                         <input type="number" name="cost" required class="form-control" step="any">
@@ -182,20 +213,20 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Price')}} *</strong> </label>
-                                        <input type="number" name="price" required class="form-control" step="any">
+                                        <input type="number" name="price" required class="form-control" step="any" placeholder="Product Price">
                                         <span class="validation-msg"></span>
                                     </div>
                                     <div class="form-group">
                                         <input type="hidden" name="qty" value="{{number_format(0, $general_setting->decimal, '.', '')}}">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 custom-dn">
                                     <div class="form-group">
                                         <label>{{trans('file.Wholesale Price')}}</strong> </label>
                                         <input type="number" name="wholesale_price" class="form-control" step="any">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-4 custom-dn">
                                     <div class="form-group">
                                         <label>{{trans('file.Daily Sale Objective')}}</strong></label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.Minimum qty which must be sold in a day. If not, you will be notified on dashboard. But you have to set up the cron job properly for that. Follow the documentation in that regard.')}}"></i>
                                         <input type="number" name="daily_sale_objective" class="form-control" step="any">
@@ -204,17 +235,16 @@
                                 <div id="alert-qty" class="col-md-4">
                                     <div class="form-group">
                                         <label>{{trans('file.Alert Quantity')}}</strong> </label>
-                                        <input type="number" name="alert_quantity" class="form-control" step="any">
+                                        <input type="number" name="alert_quantity" class="form-control" step="any" placeholder="Alert Quantity">
                                     </div>
                                 </div>
-                                <div id="value_one" class="col-md-4">
+                                <!-- <div id="value_one" class="col-md-4 custom-dn">
                                     <div class="form-group">
                                         <label> Value One </label>
                                         <input type="text" name="value_one" class="form-control" >
                                     </div>
-                                </div>
-                                {{--
-                                <div class="col-md-4">
+                                </div> -->
+                                <div class="col-md-4 custom-dn">
                                     <div class="form-group">
                                         <label>{{trans('file.Product Tax')}}</label>
                                         <div class="input-group pos">
@@ -229,9 +259,7 @@
                                     </div>
                                     </div>
                                 </div>
-                                --}}
-                                {{--
-                                <div class="col-md-4">
+                                <div class="col-md-4 custom-dn">
                                     <div class="form-group">
                                         <label>{{trans('file.Tax Method')}}</strong> </label> <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.Exclusive: Poduct price = Actual product price + Tax. Inclusive: Actual product price = Product price - Tax')}}"></i>
                                         <select name="tax_method" class="form-control selectpicker">
@@ -240,63 +268,62 @@
                                         </select>
                                     </div>
                                 </div>
-                                --}}
                              
                                 
+                                {{--
+                                @foreach($custom_fields as $field)
 
-@foreach($custom_fields as $field)
-
-    @if(!$field->is_admin || \Auth::user()->role_id == 1)
-        <div class="{{'col-md-'.$field->grid_value}}">
-            <div class="form-group">
-                <label>{{$field->name}}</label>
-                @if($field->type == 'text')
-                    <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
-                @elseif($field->type == 'number')
-                    <input type="number" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
-                @elseif($field->type == 'textarea')
-                    <textarea rows="5" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif></textarea>
-                @elseif($field->type == 'checkbox')
-                    <br>
-                    <?php $option_values = explode(",", $field->option_value); ?>
-                    @foreach($option_values as $value)
-                        <label>
-                            <input type="checkbox" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
-                        </label>
-                        &nbsp;
-                    @endforeach
-                @elseif($field->type == 'radio_button')
-                    <br>
-                    <?php $option_values = explode(",", $field->option_value); ?>
-                    @foreach($option_values as $value)
-                        <label class="radio-inline">
-                            <input type="radio" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
-                        </label>
-                        &nbsp;
-                    @endforeach
-                @elseif($field->type == 'select')
-                    <?php $option_values = explode(",", $field->option_value); ?>
-                    <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}" @if($field->is_required){{'required'}}@endif>
-                        @foreach($option_values as $value)
-                            <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
-                        </select>
-                    @endforeach
-                @elseif($field->type == 'multi_select')
-                    <?php $option_values = explode(",", $field->option_value); ?>
-                    <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" @if($field->is_required){{'required'}}@endif multiple>
-                        @foreach($option_values as $value)
-                            <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
-                        </select>
-                    @endforeach
-                @elseif($field->type == 'date_picker')
-                    <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control date" @if($field->is_required){{'required'}}@endif>
-                @endif
-            </div>
-        </div>
-    @endif
-    
-@endforeach
-
+                                    @if(!$field->is_admin || \Auth::user()->role_id == 1)
+                                        <div class="{{'col-md-'.$field->grid_value}}">
+                                            <div class="form-group">
+                                                <label>{{$field->name}}</label>
+                                                @if($field->type == 'text')
+                                                    <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
+                                                @elseif($field->type == 'number')
+                                                    <input type="number" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif>
+                                                @elseif($field->type == 'textarea')
+                                                    <textarea rows="5" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control" @if($field->is_required){{'required'}}@endif></textarea>
+                                                @elseif($field->type == 'checkbox')
+                                                    <br>
+                                                    <?php $option_values = explode(",", $field->option_value); ?>
+                                                    @foreach($option_values as $value)
+                                                        <label>
+                                                            <input type="checkbox" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
+                                                        </label>
+                                                        &nbsp;
+                                                    @endforeach
+                                                @elseif($field->type == 'radio_button')
+                                                    <br>
+                                                    <?php $option_values = explode(",", $field->option_value); ?>
+                                                    @foreach($option_values as $value)
+                                                        <label class="radio-inline">
+                                                            <input type="radio" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$value}}" @if($value == $field->default_value){{'checked'}}@endif @if($field->is_required){{'required'}}@endif> {{$value}}
+                                                        </label>
+                                                        &nbsp;
+                                                    @endforeach
+                                                @elseif($field->type == 'select')
+                                                    <?php $option_values = explode(",", $field->option_value); ?>
+                                                    <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}" @if($field->is_required){{'required'}}@endif>
+                                                        @foreach($option_values as $value)
+                                                            <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
+                                                        </select>
+                                                    @endforeach
+                                                @elseif($field->type == 'multi_select')
+                                                    <?php $option_values = explode(",", $field->option_value); ?>
+                                                    <select class="form-control" name="{{str_replace(' ', '_', strtolower($field->name))}}[]" @if($field->is_required){{'required'}}@endif multiple>
+                                                        @foreach($option_values as $value)
+                                                            <option value="{{$value}}" @if($value == $field->default_value){{'selected'}}@endif>{{$value}}</option>
+                                                        </select>
+                                                    @endforeach
+                                                @elseif($field->type == 'date_picker')
+                                                    <input type="text" name="{{str_replace(' ', '_', strtolower($field->name))}}" value="{{$field->default_value}}" class="form-control date" @if($field->is_required){{'required'}}@endif>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    @endif
+                                    
+                                @endforeach
+                                --}}
 
                                 <div class="col-md-4">
                                     <div class="form-group mt-3">
@@ -305,23 +332,19 @@
                                         <p class="italic">{{trans('file.This feature will not work for product with variants and batches')}}</p>
                                     </div>
                                 </div>
-                                {{--
-                                <div class="col-md-4">
+                                <div class="col-md-4 custom-dn">
                                     <div class="form-group mt-3">
                                         <input type="checkbox" name="featured" value="1">&nbsp;
                                         <label>{{trans('file.Featured')}}</label>
                                         <p class="italic">{{trans('file.Featured product will be displayed in POS')}}</p>
                                     </div>
                                 </div>
-                                --}}
-                                {{--
-                                <div class="col-md-4">
+                                <div class="col-md-4 custom-dn">
                                     <div class="form-group mt-3">
                                         <input type="checkbox" name="is_embeded" value="1">&nbsp;
                                         <label>{{trans('file.Embedded Barcode')}} <i class="dripicons-question" data-toggle="tooltip" title="{{trans('file.Check this if this product will be used in weight scale machine.')}}"></i></label>
                                     </div>
                                 </div>
-                                --}}
                                 <div class="col-md-6" id="initial-stock-section">
                                     <div class="table-responsive ml-2">
                                         <table class="table table-hover">
@@ -343,6 +366,51 @@
                                             <tbody>
                                             </tbody>
                                         </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Invoice Chalan</strong> </label>
+                                        <input type="text" name="invoice_chalan" class="form-control" placeholder="Invoice Chalan">
+                                    </div>
+                                </div>
+                                <div class="col-md-4 setProductColor">
+                                    <div class="form-group">
+                                        <label>Product Color *</label>
+                                        <div class="input-group pos">
+                                          <select name="color" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Product Type..." required>
+                                            @foreach($lims_color_list as $color)
+                                                <option value="{{$color->id}}">{{$color->name}}</option>
+                                            @endforeach
+                                          </select>
+                                          <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#addProductColor"><i class="dripicons-plus"></i></button>
+                                      </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 setProductSize">
+                                    <div class="form-group">
+                                        <label>Product Size *</label>
+                                        <div class="input-group pos">
+                                          <select name="size" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Product Size..." required>
+                                            @foreach($lims_size_list as $size)
+                                                <option value="{{$size->id}}">{{$size->name}}</option>
+                                            @endforeach
+                                          </select>
+                                          <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#addProductSize"><i class="dripicons-plus"></i></button>
+                                      </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Shelf No</strong> </label>
+                                        <input type="text" name="shelf_no" class="form-control" placeholder="Shelf No">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Rack No</strong> </label>
+                                        <input type="text" name="rack_no" class="form-control" placeholder="Rack No">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -677,6 +745,86 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <!-- Product Type Create Modal Start -->
+    <div id="addProductType" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+          <div class="modal-content">
+            <form id="product-type-form">
+            <div class="modal-header">
+              <h5 id="exampleModalLabel" class="modal-title">Add Product Type</h5>
+              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+            </div>
+            <div class="modal-body">
+              <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
+                <div class="form-group">
+                    <label>{{trans('file.Title')}} *</label>
+                    {{-- {{Form::text('title',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand title...'))}} --}}
+                    <input type="text" name="title" class="form-control" placeholder="Product Type title..." required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="hidden" name="ajax" value="1">
+                    <button type="button" class="btn btn-primary producttype-submit-btn">{{trans('file.submit')}}</button>
+                </div>
+            </div>
+            </form>
+          </div>
+        </div>
+    </div>
+    <!-- Product Color Size Create Modal Start -->
+    <div id="addProductColor" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+          <div class="modal-content">
+            <form id="product-color-form">
+            <div class="modal-header">
+              <h5 id="exampleModalLabel" class="modal-title">Add Color</h5>
+              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+            </div>
+            <div class="modal-body">
+              <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
+                <div class="form-group">
+                    <label>Name *</label>
+                    {{-- {{Form::text('title',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand title...'))}} --}}
+                    <input type="text" name="name" class="form-control" placeholder="Color Name ..." required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="hidden" name="is_type" value="color">
+                    <input type="hidden" name="ajax" value="1">
+                    <button type="button" class="btn btn-primary productcolor-submit-btn">{{trans('file.submit')}}</button>
+                </div>
+            </div>
+            </form>
+          </div>
+        </div>
+    </div>
+    <!-- Product Color Size Create Modal Start -->
+    <div id="addProductSize" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
+        <div role="document" class="modal-dialog">
+          <div class="modal-content">
+            <form id="product-size-form">
+            <div class="modal-header">
+              <h5 id="exampleModalLabel" class="modal-title">Add Size</h5>
+              <button type="button" data-dismiss="modal" aria-label="Close" class="close"><span aria-hidden="true"><i class="dripicons-cross"></i></span></button>
+            </div>
+            <div class="modal-body">
+              <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
+                <div class="form-group">
+                    <label>Name *</label>
+                    {{-- {{Form::text('title',null,array('required' => 'required', 'class' => 'form-control', 'placeholder' => 'Type brand title...'))}} --}}
+                    <input type="text" name="name" class="form-control" placeholder="Color Name ..." required>
+                </div>
+                
+                <div class="form-group">
+                    <input type="hidden" name="is_type" value="size">
+                    <input type="hidden" name="ajax" value="1">
+                    <button type="button" class="btn btn-primary productsize-submit-btn">{{trans('file.submit')}}</button>
+                </div>
+            </div>
+            </form>
+          </div>
         </div>
     </div>
     <!-- Brand Create Modal Start -->
@@ -1793,6 +1941,57 @@
             this.removeAllFiles(true);
         }
     });
+    // product type create ajax start
+    $('.producttype-submit-btn').on("click", function() {
+        $.ajax({
+            type:'POST',
+            url:'{{route('producttype.store')}}',
+            data: $("#product-type-form").serialize(),
+            success:function(response) {
+                key = response['id'];
+                value = response['title'];
+                $('select[name="type"]').append('<option value="'+ key +'">'+ value +'</option>');
+                $('select[name="type"]').val(key);
+                $('.selectpicker').selectpicker('refresh');
+                $("#addProductType").modal('hide');
+            }
+        });
+    });
+
+    // product color size create ajax start
+    $('.productcolor-submit-btn').on("click", function() {
+        $.ajax({
+            type:'POST',
+            url:'{{route('variant.store')}}',
+            data: $("#product-color-form").serialize(),
+            success:function(response) {
+
+                key = response['id'];
+                value = response['name'];
+                $('.setProductColor select[name="color"]').append('<option value="'+ key +'">'+ value +'</option>');
+                $('.setProductColor select[name="color"]').val(key);
+                $('.setProductColor .selectpicker').selectpicker('refresh');
+                $("#addProductColor").modal('hide');
+            }
+        });
+    });
+    $('.productsize-submit-btn').on("click", function() {
+        $.ajax({
+            type:'POST',
+            url:'{{route('variant.store')}}',
+            data: $("#product-size-form").serialize(),
+            success:function(response) {
+
+                key = response['id'];
+                value = response['name'];
+                $('.setProductSize select[name="size"]').append('<option value="'+ key +'">'+ value +'</option>');
+                $('.setProductSize select[name="size"]').val(key);
+                $('.setProductSize .selectpicker').selectpicker('refresh');
+                $("#addProductSize").modal('hide');
+            }
+        });
+    });
+    
     // brand create ajax start
     $('.brand-submit-btn').on("click", function() {
         $.ajax({

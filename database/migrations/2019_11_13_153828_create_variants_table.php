@@ -12,6 +12,8 @@ class CreateVariantsTable extends Migration
         Schema::create('variants', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
+            $table->enum('is_type', ['color', 'size'])->default('color');
+            $table->boolean('is_active')->nullable();
             $table->timestamps();
         });
     }

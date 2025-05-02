@@ -68,7 +68,9 @@ use App\Http\Controllers\PackingSlipController;
 use App\Http\Controllers\ChallanController;
 use App\Http\Controllers\BarcodeController;
 use App\Http\Controllers\LabelsController;
-
+use App\Http\Controllers\ProductTypeController;
+use App\Http\Controllers\VariantController;
+use App\Models\ProductType;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -177,6 +179,20 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function() {
         });
     });
 
+    Route::controller(ProductTypeController::class)->group(function () {
+        Route::post('importproducttype', 'importProductType')->name('producttype.import');
+        Route::post('producttype/deletebyselection', 'deleteBySelection');
+        Route::get('producttype/lims_producttype_search', 'limsProductTypeSearch')->name('producttype.search');
+    });
+    Route::resource('producttype', ProductTypeController::class);
+
+    Route::controller(VariantController::class)->group(function () {
+        Route::post('importvariant', 'importVariant')->name('variant.import');
+        Route::post('variant/deletebyselection', 'deleteBySelection');
+        Route::get('variant/lims_variant_search', 'limsVariantSearch')->name('variant.search');
+    });
+    Route::resource('variant', VariantController::class);
+
     // Need to check again
     Route::resource('products',ProductController::class)->except([ 'index','create','show']);
     Route::controller(ProductController::class)->group(function () {
@@ -205,6 +221,7 @@ Route::group(['middleware' => ['common', 'auth', 'active']], function() {
         Route::get('products/show-all-product-online', 'showAllProductOnline')->name('product.showAllProductOnline');
         Route::get('check-batch-availability/{product_id}/{batch_no}/{warehouse_id}', 'checkBatchAvailability');
      });
+
 
 
     Route::get('language_switch/{locale}', [LanguageController::class, 'switchLanguage']);

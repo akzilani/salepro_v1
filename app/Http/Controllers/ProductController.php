@@ -28,6 +28,7 @@ use App\Models\Barcode;
 use App\Models\Purchase;
 use App\Models\ProductPurchase;
 use App\Models\Payment;
+use App\Models\ProductType;
 use App\Traits\TenantInfo;
 use App\Traits\CacheForget;
 use Intervention\Image\ImageManager;
@@ -74,6 +75,7 @@ class ProductController extends Controller
     public function productData(Request $request)
     {
         $columns = array(
+            1 => 'id',
             2 => 'name',
             3 => 'code',
             4 => 'brand_id',
@@ -205,9 +207,11 @@ class ProductController extends Controller
                 $nestedData['cost'] = $product->cost;
 
                 if (config('currency_position') == 'prefix')
-                    $nestedData['stock_worth'] = config('currency') . ' ' . ($nestedData['qty'] * $product->price) . ' / ' . config('currency') . ' ' . ($nestedData['qty'] * $product->cost);
+                    // $nestedData['stock_worth'] = config('currency') . ' ' . ($nestedData['qty'] * $product->price) . ' / ' . config('currency') . ' ' . ($nestedData['qty'] * $product->cost);
+                    $nestedData['stock_worth'] = config('currency') . ' ' . ($nestedData['qty'] * $product->price);
                 else
-                    $nestedData['stock_worth'] = ($nestedData['qty'] * $product->price) . ' ' . config('currency') . ' / ' . ($nestedData['qty'] * $product->cost) . ' ' . config('currency');
+                    // $nestedData['stock_worth'] = ($nestedData['qty'] * $product->price) . ' ' . config('currency') . ' / ' . ($nestedData['qty'] * $product->cost) . ' ' . config('currency');
+                    $nestedData['stock_worth'] = ($nestedData['qty'] * $product->price) . ' ' . config('currency');
 
 
                 //    add extra value
@@ -308,13 +312,16 @@ class ProductController extends Controller
             $lims_product_list_without_variant = $this->productWithoutVariant();
             $lims_product_list_with_variant = $this->productWithVariant();
             $lims_brand_list = Brand::where('is_active', true)->get();
+            $lims_product_types = ProductType::where('is_active', true)->get();
             $lims_category_list = Category::where('is_active', true)->get();
             $lims_unit_list = Unit::where('is_active', true)->get();
+            $lims_color_list = Variant::where('is_type', 'color')->get();
+            $lims_size_list = Variant::where('is_type', 'size')->get();
             $lims_tax_list = Tax::where('is_active', true)->get();
             $lims_warehouse_list = Warehouse::where('is_active', true)->get();
             $numberOfProduct = Product::where('is_active', true)->count();
             $custom_fields = CustomField::where('belongs_to', 'product')->get();
-            return view('backend.product.create', compact('lims_product_list_without_variant', 'lims_product_list_with_variant', 'lims_brand_list', 'lims_category_list', 'lims_unit_list', 'lims_tax_list', 'lims_warehouse_list', 'numberOfProduct', 'custom_fields'));
+            return view('backend.product.create', compact('lims_product_list_without_variant', 'lims_product_list_with_variant', 'lims_brand_list', 'lims_product_types', 'lims_category_list', 'lims_unit_list', 'lims_color_list', 'lims_size_list', 'lims_tax_list', 'lims_warehouse_list', 'numberOfProduct', 'custom_fields'));
         } else
             return redirect()->back()->with('not_permitted', 'Sorry! You are not allowed to access this module');
     }
@@ -357,6 +364,14 @@ class ProductController extends Controller
             //$data['cost'] = $data['unit_id'] = $data['purchase_unit_id'] = $data['sale_unit_id'] = 0;
         } elseif ($data['type'] == 'digital' || $data['type'] == 'service')
             $data['cost'] = $data['unit_id'] = $data['purchase_unit_id'] = $data['sale_unit_id'] = 0;
+
+        
+
+        $data['invoice_chalan'] = $data['invoice_chalan'];
+        $data['color'] = $data['color'];
+        $data['size'] = $data['size'];
+        $data['shelf_no'] = $data['shelf_no'];
+        $data['rack_no'] = $data['rack_no'];
 
         $data['product_details'] = str_replace('"', '@', $data['product_details']);
 
@@ -996,6 +1011,7 @@ class ProductController extends Controller
             $lims_product_list_without_variant = $this->productWithoutVariant();
             $lims_product_list_with_variant = $this->productWithVariant();
             $lims_brand_list = Brand::where('is_active', true)->get();
+            $lims_product_types = ProductType::where('is_active', true)->get();
             $lims_category_list = Category::where('is_active', true)->get();
             $lims_unit_list = Unit::where('is_active', true)->get();
             $lims_tax_list = Tax::where('is_active', true)->get();
@@ -1511,16 +1527,15 @@ class ProductController extends Controller
                     continue;
                 }
 
-
                 // Handle brand
                 $brand_id = null;
-                if (isset($data['brand']) && $data['brand'] !== 'N/A' && $rowData['brand'] !== '') {
-                    $lims_brand_data = Brand::firstOrCreate(['title' => $rowData['brand'], 'is_active' => true]);
+                if ($rowData['buyer'] !== '') {
+                    $lims_brand_data = Brand::firstOrCreate(['title' => $rowData['buyer'], 'is_active' => true]);
                     $brand_id = $lims_brand_data->id;
                 }
 
                 // Handle category
-                $lims_category_data = Category::firstOrCreate(['name' => $rowData['category_id'], 'is_active' => true]);
+                $lims_category_data = Category::firstOrCreate(['name' => $rowData['style'], 'is_active' => true]);
 
                 // $lims_category_data = Product::firstOrCreate(['invoice_(challan)_no' => $data['product']]);
                 // Handle unit
@@ -1566,6 +1581,7 @@ class ProductController extends Controller
                 $product->unit_id = $lims_unit_data->id;
                 $product->purchase_unit_id = $lims_unit_data->id;
                 $product->sale_unit_id = $lims_unit_data->id;
+                $product->invoice_chalan = $rowData['invoice_chalan'];
                 if (in_array('ecommerce', explode(',', config('addons')))) {
                     $product->slug  = Str::slug($rowData['name']);
                     $product->in_stock = true;
@@ -1647,7 +1663,7 @@ class ProductController extends Controller
             }
 
             fclose($file);
-            return redirect('products')->with('import_message', 'Products imported successfully!');
+            return redirect('current-stock')->with('import_message', 'Products imported successfully!');
         } catch (\Exception $e) {
             fclose($file);
             return redirect()->back()->with('message', 'Error: ' . $e->getMessage());
@@ -1710,7 +1726,7 @@ class ProductController extends Controller
             $lims_product_data->save();
             $this->cacheForget('product_list');
             $this->cacheForget('product_list_with_variant');
-            return redirect('products')->with('message', 'Product deleted successfully');
+            return redirect('current-stock')->with('message', 'Product deleted successfully');
         }
     }
 }
