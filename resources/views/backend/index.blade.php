@@ -121,22 +121,22 @@
             @php
               $cash_flow = $role_has_permissions_list->where('name', 'cash_flow')->first();
             @endphp
-            @if($cash_flow)
-            <div class="col-md-7 mt-4">
-              <div class="card line-chart-example">
-                <div class="card-header d-flex align-items-center">
-                  <h4>{{trans('file.Cash Flow')}}</h4>
-                </div>
-                <div class="card-body">
-                  <canvas id="cashFlow" data-color = "{{$color}}" data-color_rgba = "{{$color_rgba}}" data-recieved = "{{json_encode($payment_recieved)}}" data-sent = "{{json_encode($payment_sent)}}" data-month = "{{json_encode($month)}}" data-label1="{{trans('file.Payment Recieved')}}" data-label2="{{trans('file.Payment Sent')}}"></canvas>
+            <!-- @if($cash_flow)
+              <div class="col-md-7 mt-4">
+                <div class="card line-chart-example">
+                  <div class="card-header d-flex align-items-center">
+                    <h4>{{trans('file.Cash Flow')}}</h4>
+                  </div>
+                  <div class="card-body">
+                    <canvas id="cashFlow" data-color = "{{$color}}" data-color_rgba = "{{$color_rgba}}" data-recieved = "{{json_encode($payment_recieved)}}" data-sent = "{{json_encode($payment_sent)}}" data-month = "{{json_encode($month)}}" data-label1="{{trans('file.Payment Recieved')}}" data-label2="{{trans('file.Payment Sent')}}"></canvas>
+                  </div>
                 </div>
               </div>
-            </div>
-            @endif
-            @php
+            @endif -->
+            <!-- @php
               $monthly_summary = $role_has_permissions_list->where('name', 'monthly_summary')->first();
-            @endphp
-            @if($monthly_summary)
+            @endphp -->
+            <!-- @if($monthly_summary)
             <div class="col-md-5 mt-4">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -147,13 +147,13 @@
                 </div>
               </div>
             </div>
-            @endif
+            @endif -->
           </div>
         </div>
 
         <div class="container-fluid">
           <div class="row">
-            @php
+            <!-- @php
               $yearly_report = $role_has_permissions_list->where('name', 'yearly_report')->first();
             @endphp
             @if($yearly_report)
@@ -167,8 +167,8 @@
                 </div>
               </div>
             </div>
-            @endif
-            <div class="col-md-7">
+            @endif -->
+            <!-- <div class="col-md-7">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4>{{trans('file.Recent Transaction')}}</h4>
@@ -263,8 +263,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="col-md-5">
+            </div> -->
+            <!-- <div class="col-md-5">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4>{{trans('file.Best Seller').' '.date('F')}}</h4>
@@ -286,8 +286,8 @@
                     </table>
                   </div>
               </div>
-            </div>
-            <div class="col-md-6">
+            </div> -->
+            <!-- <div class="col-md-6">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h4>{{trans('file.Best Seller').' '.date('Y'). '('.trans('file.qty').')'}}</h4>
@@ -309,30 +309,30 @@
                     </table>
                   </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                  <h4>{{trans('file.Best Seller').' '.date('Y') . '('.trans('file.price').')'}}</h4>
-                  <div class="right-column">
-                    <div class="badge badge-primary">{{trans('file.top')}} 5</div>
+            </div> -->
+              <!-- <div class="col-md-6">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4>{{trans('file.Best Seller').' '.date('Y') . '('.trans('file.price').')'}}</h4>
+                    <div class="right-column">
+                      <div class="badge badge-primary">{{trans('file.top')}} 5</div>
+                    </div>
                   </div>
-                </div>
-                <div class="table-responsive">
-                    <table id="yearly-best-selling-price" class="table">
-                      <thead>
-                        <tr>
-                          <th>{{trans('file.Product Details')}}</th>
-                          <th>{{trans('file.grand total')}}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
+                  <div class="table-responsive">
+                      <table id="yearly-best-selling-price" class="table">
+                        <thead>
+                          <tr>
+                            <th>{{trans('file.Product Details')}}</th>
+                            <th>{{trans('file.grand total')}}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
 
-                      </tbody>
-                    </table>
-                  </div>
-              </div>
-            </div>
+                        </tbody>
+                      </table>
+                    </div>
+                </div>
+              </div> -->
           </div>
         </div>
       </section>

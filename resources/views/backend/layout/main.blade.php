@@ -294,16 +294,16 @@
           $general_setting_permission_active = $role_has_permissions_list->where('name', 'general_setting')->first();
 
           ?>
-          @if($sale_add_permission_active)
+          <!-- @if($sale_add_permission_active)
           <li class="nav-item"><a class="btn-pos btn-sm" href="{{route('sale.pos')}}"><i class="dripicons-shopping-bag"></i><span> POS</span></a></li>
-          @endif
+          @endif -->
           <li class="nav-item d-none d-lg-block"><a id="switch-theme" data-toggle="tooltip" title="{{trans('file.Switch Theme')}}"><i class="dripicons-brightness-max"></i></a></li>
           @if(config('database.connections.saleprosaas_landlord'))
           <li class="nav-item"><a target="_blank" href="{{'https://'.env('CENTRAL_DOMAIN').'/contact-for-renewal?id='.$subdomain}}" data-toggle="tooltip" title="{{trans('file.Renew Subscription')}}"><i class="dripicons-clockwise"></i></a></li>
           @endif
           <li class="nav-item d-none d-lg-block"><a id="btnFullscreen" data-toggle="tooltip" title="{{trans('file.Full Screen')}}"><i class="dripicons-expand"></i></a></li>
-          @if(\Auth::user()->role_id <= 2) <li class="nav-item"><a href="{{route('cashRegister.index')}}" data-toggle="tooltip" title="{{trans('file.Cash Register List')}}"><i class="dripicons-archive"></i></a></li>
-            @endif
+          <!-- @if(\Auth::user()->role_id <= 2) <li class="nav-item"><a href="{{route('cashRegister.index')}}" data-toggle="tooltip" title="{{trans('file.Cash Register List')}}"><i class="dripicons-archive"></i></a></li>
+            @endif -->
             @if($product_qty_alert_active && ($alert_product + $dso_alert_product_no + \Auth::user()->unreadNotifications->where('data.reminder_date', date('Y-m-d'))->count() ) > 0)
             <li class="nav-item" id="notification-icon">
               <a rel="nofollow" data-toggle="tooltip" title="{{__('Notifications')}}" class="nav-link dropdown-item"><i class="dripicons-bell"></i><span class="badge badge-danger notification-number">{{$alert_product + $dso_alert_product_no + \Auth::user()->unreadNotifications->where('data.reminder_date', date('Y-m-d'))->count()}}</span>
@@ -349,7 +349,7 @@
             @php
             $languages = array_map('basename', File::directories(resource_path('lang')));
             @endphp
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a rel="nofollow" title="{{trans('file.language')}}" data-toggle="tooltip" class="nav-link dropdown-item"><i class="dripicons-web"></i></a>
               <ul class="right-sidebar">
                 @foreach ($languages as $language)
@@ -358,7 +358,7 @@
                 </li>
                 @endforeach
               </ul>
-            </li>
+            </li> -->
             <li class="nav-item">
               <a rel="nofollow" data-toggle="tooltip" class="nav-link dropdown-item"><i class="dripicons-user"></i> <span>{{ucfirst(Auth::user()->name)}}</span> <i class="fa fa-angle-down"></i>
               </a>
