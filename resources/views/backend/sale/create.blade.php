@@ -25,7 +25,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header d-flex align-items-center">
-                        <h4>{{trans('file.Add Sale')}}</h4>
+                        <h4> Product Out </h4>
                     </div>
                     <div class="card-body">
                         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
@@ -54,7 +54,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>{{trans('file.customer')}} *</label>
+                                            <label> Receiver Name </label>
                                             <div class="input-group pos">
                                                 <?php
                                                   $deposit = [];
@@ -111,7 +111,7 @@
                                     @else
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>{{trans('file.Biller')}} *</label>
+                                            <label>Provider Name </label>
                                             <select required id="biller_id" name="biller_id" class="selectpicker form-control" data-live-search="true" data-live-search-style="begins" title="Select Biller...">
                                                 @foreach($lims_biller_list as $biller)
                                                 <option value="{{$biller->id}}">{{$biller->name . ' (' . $biller->company_name . ')'}}</option>
@@ -159,14 +159,14 @@
                                                 <thead>
                                                     <tr>
                                                         <th>{{trans('file.name')}}</th>
-                                                        <th>{{trans('file.Code')}}</th>
+                                                        <th> PO Number </th>
                                                         <th>{{trans('file.Quantity')}}</th>
                                                         <th class="custom-dn">{{trans('file.Batch No')}}</th>
                                                         <th class="custom-dn">{{trans('file.Expired Date')}}</th>
                                                         <th class="custom-dn">{{trans('file.Net Unit Price')}}</th>
                                                         <th class="custom-dn">{{trans('file.Discount')}}</th>
                                                         <th class="custom-dn">{{trans('file.Tax')}}</th>
-                                                        <th>{{trans('file.Subtotal')}}</th>
+                                                        <th class="custom-dn" > {{trans('file.Subtotal')}}</th>
                                                         <th><i class="dripicons-trash"></i></th>
                                                     </tr>
                                                 </thead>
@@ -180,7 +180,7 @@
                                                     <th class="custom-dn"></th>
                                                     <th id="total-discount" class="custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
                                                     <th id="total-tax" class="custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
-                                                    <th id="total">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
+                                                    <th id="total" class="custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</th>
                                                     <th><i class="dripicons-trash"></i></th>
                                                 </tfoot>
                                             </table>
@@ -439,16 +439,16 @@
                                 <div class="row mt-2">
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>{{trans('file.Sale Note')}}</label>
+                                            <label> Note </label>
                                             <textarea rows="5" class="form-control" name="sale_note"></textarea>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <!-- <div class="col-md-6">
                                         <div class="form-group">
                                             <label>{{trans('file.Staff Note')}}</label>
                                             <textarea rows="5" class="form-control" name="staff_note"></textarea>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="form-group">
                                     {{-- <input type="submit" value="{{trans('file.submit')}}" class="btn btn-primary" id="submit-button"> --}}
@@ -468,7 +468,7 @@
                 <span class="pull-right" id="item">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
             </td>
             <td><strong>{{trans('file.Total')}}</strong>
-                <span class="pull-right" id="subtotal">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
+                <span  class="pull-right" id="subtotal">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
             </td>
             <td class="custom-dn"><strong>{{trans('file.Order Tax')}}</strong>
                 <span class="pull-right" id="order_tax">{{number_format(0, $general_setting->decimal, '.', '')}}</span>
@@ -1064,7 +1064,7 @@ function productSearch(data) {
                     cols += '<td class="net_unit_price custom-dn"></td>';
                     cols += '<td class="discount custom-dn">{{number_format(0, $general_setting->decimal, '.', '')}}</td>';
                     cols += '<td class="tax custom-dn"></td>';
-                    cols += '<td class="sub-total"></td>';
+                    cols += '<td type="hidden" class="sub-total custom-dn"></td>';
                     cols += '<td><button type="button" class="ibtnDel btn btn-md btn-danger">{{trans("file.delete")}}</button></td>';
                     cols += '<input type="hidden" class="product-code" name="product_code[]" value="' + data[1] + '"/>';
                     cols += '<input type="hidden" class="product-id" name="product_id[]" value="' + data[9] + '"/>';

@@ -24,7 +24,18 @@ class Product extends Model
     {
         return $this->belongsTo('App\Models\Unit');
     }
-
+    public function types()
+    {
+    	return $this->belongsTo('App\Models\ProductType','type','id');
+    }
+    public function colors()
+    {
+    	return $this->belongsTo('App\Models\Variant','color','id');
+    }
+    public function sizes()
+    {
+    	return $this->belongsTo('App\Models\Variant','size','id');
+    }
     public function variant()
     {
         return $this->belongsToMany('App\Models\Variant', 'product_variants')->withPivot('id', 'item_code', 'additional_cost', 'additional_price','invoice_(challan)_no');

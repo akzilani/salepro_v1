@@ -59,7 +59,7 @@
                       <tr>
                         <th class="not-exported"></th>
                         <th>{{trans('file.date')}}</th>
-                        <th>{{trans('file.reference')}}</th>
+                        <th>Invoice Chalan </th>
                         <th>{{trans('file.Biller')}}</th>
                         <th>{{trans('file.Warehouse')}}</th>
                         <th>{{trans('file.Sale Status')}}</th>

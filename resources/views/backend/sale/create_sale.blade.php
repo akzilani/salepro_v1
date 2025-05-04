@@ -1419,10 +1419,10 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <button class="btn btn-block btn-primary" id="category-filter">{{trans('file.category')}}</button>
+                        <button class="btn btn-block btn-primary" id="category-filter"> Style</button>
                     </div>
                     <div class="col-md-4">
-                        <button class="btn btn-block btn-info" id="brand-filter">{{trans('file.Brand')}}</button>
+                        <button class="btn btn-block btn-info" id="brand-filter">Buyer</button>
                     </div>
                     <div class="col-md-4">
                         <button class="btn btn-block btn-danger" id="featured-filter">{{trans('file.Featured')}}</button>

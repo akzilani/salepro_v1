@@ -234,7 +234,7 @@
                 <div class="filter-window">
                     <div class="category mt-3">
                         <div class="row ml-2 mr-2 px-2">
-                            <div class="col-7">Choose category</div>
+                            <div class="col-7">Choose Style</div>
                             <div class="col-5 text-right">
                                 <span class="btn btn-default btn-sm btn-close">
                                     <i class="dripicons-cross"></i>
@@ -256,7 +256,7 @@
                     </div>
                     <div class="brand mt-3">
                         <div class="row ml-2 mr-2 px-2">
-                            <div class="col-7">Choose brand</div>
+                            <div class="col-7">Choose Buyer</div>
                             <div class="col-5 text-right">
                                 <span class="btn btn-default btn-sm btn-close">
                                     <i class="dripicons-cross"></i>
@@ -293,9 +293,9 @@
                 <div id="collapseProducts" class="">
                     <div class="d-flex justify-content-between product-btns">
 
-                        <button class="btn btn-block btn-primary mt-0 ml-1 mr-1" id="category-filter">{{trans('file.category')}}</button>
+                        <button class="btn btn-block btn-primary mt-0 ml-1 mr-1" id="category-filter"> Style</button>
 
-                        <button class="btn btn-block btn-info mt-0 ml-1 mr-1" id="brand-filter">{{trans('file.Brand')}}</button>
+                        <button class="btn btn-block btn-info mt-0 ml-1 mr-1" id="brand-filter">Buyer</button>
 
                         <button class="btn btn-block btn-danger mt-0 ml-1 mr-1" id="featured-filter">{{trans('file.Featured')}}</button>
                     </div>

@@ -25,7 +25,7 @@
             $color_rgba = 'rgba(52, 73, 94, 0.8)';
         }
       @endphp
-      <div class="row">
+      <!-- <div class="row">
 
         <div class="container-fluid">
           @php
@@ -67,7 +67,7 @@
             @endif
           </div>
         </div>
-      </div>
+      </div> -->
       <!-- Counts Section -->
       <section class="dashboard-counts">
         <div class="container-fluid">
@@ -75,6 +75,24 @@
             @if($revenue_profit_summary)
             <div class="col-md-12 form-group">
               <div class="row">
+                <!-- Total Product Summery -->
+                <div class="col-sm-6">
+                  <div class="wrapper count-title">
+                    <div class="icon"><i class="dripicons-return" style="color: #ff8952"></i></div>
+                    <div>
+                        <div class="count-number return-data">Product Type: {{$totalProductTypes}}</div>
+                        <div class="count-number return-data">Buyer: {{$totalBrands}}</div>
+                        <div class="count-number return-data">Style: {{$totalCategories}}</div>
+                        <div class="count-number return-data">Produts: {{$totalProducts}}</div>
+                        <div class="name"><strong style="color: #ff8952">Product Summery</strong></div>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              
+              <div class="row">
+                
                 <!-- Count item widget-->
                 <div class="col-sm-3">
                   <div class="wrapper count-title">
@@ -115,6 +133,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
             @endif

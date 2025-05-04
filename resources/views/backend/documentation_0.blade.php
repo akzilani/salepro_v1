@@ -361,9 +361,9 @@
                 <h3>DASHBOARD</h3>
                 <hr class="notop">
             </div>
-            <p>
+            <!-- <p>
                 We have a gorgeous looking dashboard for our customer from where they get Revenue, Sale Return, Purchase Return and Profit information of today / last 7 days / current month / current year at a glance by one click.
-            </p>
+            </p> -->
             <p>
                 <img alt="" src="read_me/assets/images/dashboard1.png">
             </p>

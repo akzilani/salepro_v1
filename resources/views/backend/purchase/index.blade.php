@@ -10,7 +10,7 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header mt-2">
-                <h3 class="text-center">{{trans('file.Purchase List')}}</h3>
+                <h3 class="text-center"> Product In List</h3>
             </div>
             {!! Form::open(['route' => 'purchases.index', 'method' => 'get']) !!}
             <div class="row ml-1 mt-2">
@@ -74,7 +74,7 @@
                 <tr>
                     <th class="not-exported"></th>
                     <th>{{trans('file.Date')}}</th>
-                    <th>{{trans('file.reference')}}</th>
+                    <th>Invoice Chalan </th>
                     <th>{{trans('file.Supplier')}}</th>
                     <th>{{trans('file.Purchase Status')}}</th>
                     <th>{{trans('file.grand total')}}</th>
@@ -138,8 +138,8 @@
                     <th>Qty</th>
                     <th>{{trans('file.Returned')}}</th>
                     <th>{{trans('file.Unit Cost')}}</th>
-                    <th>{{trans('file.Tax')}}</th>
-                    <th>{{trans('file.Discount')}}</th>
+                    <th class="custom-dn">{{trans('file.Tax')}}</th>
+                    <th class="custom-dn">{{trans('file.Discount')}}</th>
                     <th>{{trans('file.Subtotal')}}</th>
                 </thead>
                 <tbody>
@@ -350,7 +350,7 @@
         {"data": "supplier"},
         {"data": "purchase_status"},
         {"data": "grand_total"},
-        {"data": "returned_amount"},
+        // {"data": "returned_amount"},
         {"data": "paid_amount"},
         {"data": "due"},
         {"data": "payment_status"}
@@ -359,9 +359,10 @@
     var field_name = <?php echo json_encode($field_name) ?>;
     for(i = 0; i < field_name.length; i++) {
         columns.push({"data": field_name[i]});
+        console.log("column push",field_name[i])
     }
     columns.push({"data": "options"});
-
+     
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -748,9 +749,9 @@
     }
 
     function purchaseDetails(purchase){
-        var htmltext = '<strong>{{trans("file.Date")}}: </strong>'+purchase[0]+'<br><strong>{{trans("file.reference")}}: </strong>'+purchase[1]+'<br><strong>{{trans("file.Purchase Status")}}: </strong>'+purchase[2]+'<br><strong>{{trans("file.Currency")}}: </strong>'+purchase[26];
+        var htmltext = '<strong>{{trans("file.Date")}}: </strong>'+purchase[0]+'<br><strong>{{trans("file.reference")}}: </strong>'+purchase[1]+'<br><strong>{{trans("file.Purchase Status")}}: </strong>'+purchase[2]+''+purchase[26];
         if(purchase[27])
-            htmltext += '<br><strong>{{trans("file.Exchange Rate")}}: </strong>'+purchase[27]+'<br>';
+            htmltext += ''+purchase[27]+'<br>';
         else
             htmltext += '<br><strong>{{trans("file.Exchange Rate")}}: </strong>N/A<br>';
         if(purchase[25])
@@ -786,8 +787,8 @@
                     cols += '<td>' + qty[index] + ' ' + unit_code[index] + '</td>';
                     cols += '<td>' + returned[index] + '</td>';
                     cols += '<td>' + (subtotal[index] / qty[index]) + '</td>';
-                    cols += '<td>' + tax[index] + '(' + tax_rate[index] + '%)' + '</td>';
-                    cols += '<td>' + discount[index] + '</td>';
+                    // cols += '<td>' + tax[index] + '(' + tax_rate[index] + '%)' + '</td>';
+                    // cols += '<td>' + discount[index] + '</td>';
                     cols += '<td>' + subtotal[index] + '</td>';
                     newRow.append(cols);
                     newBody.append(newRow);
@@ -802,19 +803,19 @@
                 newRow.append(cols);
                 newBody.append(newRow);
 
-                var newRow = $("<tr>");
-                cols = '';
-                cols += '<td colspan=8><strong>{{trans("file.Order Tax")}}:</strong></td>';
-                cols += '<td>' + purchase[16] + '(' + purchase[17] + '%)' + '</td>';
-                newRow.append(cols);
-                newBody.append(newRow);
+                // var newRow = $("<tr>");
+                // cols = '';
+                // cols += '<td colspan=8><strong>{{trans("file.Order Tax")}}:</strong></td>';
+                // cols += '<td>' + purchase[16] + '(' + purchase[17] + '%)' + '</td>';
+                // newRow.append(cols);
+                // newBody.append(newRow);
 
-                var newRow = $("<tr>");
-                cols = '';
-                cols += '<td colspan=8><strong>{{trans("file.Order Discount")}}:</strong></td>';
-                cols += '<td>' + purchase[18] + '</td>';
-                newRow.append(cols);
-                newBody.append(newRow);
+                // var newRow = $("<tr>");
+                // cols = '';
+                // cols += '<td colspan=8><strong>{{trans("file.Order Discount")}}:</strong></td>';
+                // cols += '<td>' + purchase[18] + '</td>';
+                // newRow.append(cols);
+                // newBody.append(newRow);
 
                 var newRow = $("<tr>");
                 cols = '';

@@ -46,14 +46,15 @@
             @if($index_permission_active)
             <li><a href="#purchase" aria-expanded="false" data-toggle="collapse"> <i class="dripicons-card"></i><span> Store In</span></a>
             <ul id="purchase" class="collapse list-unstyled ">
+
+                @if($add_permission_active)
+                <li id="purchase-create-menu"><a href="{{route('product.in')}}">Product In </a></li>
+                <!-- <li id="purchase-import-menu"><a href="{{url('purchases/purchase_by_csv')}}"> Product In By CSV</a></li> -->
+                @endif
                 <li id="purchase-list-menu"><a href="{{route('purchases.index')}}">Product In Details</a></li>
                 <?php
                 $add_permission_active = $role_has_permissions_list->where('name', 'purchases-add')->first();
                 ?>
-                @if($add_permission_active)
-                <li id="purchase-create-menu"><a href="{{route('product.in')}}">Product In </a></li>
-                <li id="purchase-import-menu"><a href="{{url('purchases/purchase_by_csv')}}"> Product In By CSV</a></li>
-                @endif
             </ul>
             </li>
             @endif
@@ -77,9 +78,10 @@
                 <li id="sale-list-menu"><a href="{{route('sales.index')}}">{{trans('file.Sale List')}}</a></li>
                 @endif -->
                 @if($sale_add_permission_active)
-                <li><a href="{{route('sale.pos')}}"> Finishing Goods Out</a></li>
+                
                 <li id="sale-create-menu"><a href="{{route('sales.create')}}"> Product Out </a></li>
-                <li id="sale-import-menu"><a href="{{url('sales/sale_by_csv')}}"> Product Out By CSV </a></li>
+                <!-- <li id="sale-import-menu"><a href="{{url('sales/sale_by_csv')}}"> Product Out By CSV </a></li> -->
+                <!-- <li><a href="{{route('sale.pos')}}"> Finishing Goods Out</a></li> -->
                 @endif
                 <!-- @if($packing_slip_challan_active)
                 <li id="packing-list-menu"><a href="{{route('packingSlip.index')}}">{{trans('file.Packing Slip List')}}</a></li>
@@ -156,7 +158,7 @@
             </li>
               -->
             @endif
-            <?php
+            <!-- <?php
             $index_permission_active = $role_has_permissions_list->where('name', 'transfers-index')->first();
             ?>
             @if($index_permission_active)
@@ -172,9 +174,9 @@
                 @endif
             </ul>
             </li>
-            @endif
+            @endif -->
 
-            <?php
+            <!-- <?php
                 $sale_return_index_permission_active = $role_has_permissions_list->where('name', 'returns-index')->first();
 
                 $purchase_return_index_permission_active = $role_has_permissions_list->where('name', 'purchase-return-index')->first();
@@ -190,7 +192,7 @@
                 @endif
             </ul>
             </li>
-            @endif
+            @endif -->
             <?php
             $index_permission_active = $role_has_permissions_list->where('name', 'account-index')->first();
 

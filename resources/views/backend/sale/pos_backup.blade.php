@@ -233,7 +233,7 @@
                 <div class="filter-window">
                     <div class="category mt-3">
                         <div class="row ml-2 mr-2 px-2">
-                            <div class="col-7">Choose category</div>
+                            <div class="col-7">Choose Style</div>
                             <div class="col-5 text-right">
                                 <span class="btn btn-default btn-sm btn-close">
                                     <i class="dripicons-cross"></i>

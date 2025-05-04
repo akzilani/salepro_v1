@@ -265,24 +265,24 @@ class PurchaseController extends Controller
                                 <li>
                                     <button type="button" class="btn btn-link view"><i class="fa fa-eye"></i> '.trans('file.View').'</button>
                                 </li>';
-                if(in_array("purchases-add", $request['all_permission']))
-                    $nestedData['options'] .= '<li>
-                        <a href="'.route('purchase.duplicate', $purchase->id).'" class="btn btn-link"><i class="fa fa-copy"></i> '.trans('file.Duplicate').'</a>
-                        </li>';
+                // if(in_array("purchases-add", $request['all_permission']))
+                //     $nestedData['options'] .= '<li>
+                //         <a href="'.route('purchase.duplicate', $purchase->id).'" class="btn btn-link"><i class="fa fa-copy"></i> '.trans('file.Duplicate').'</a>
+                //         </li>';
                 if(in_array("purchases-edit", $request['all_permission']))
                     $nestedData['options'] .= '<li>
                         <a href="'.route('purchases.edit', $purchase->id).'" class="btn btn-link"><i class="dripicons-document-edit"></i> '.trans('file.edit').'</a>
                         </li>';
-                if(in_array("purchase-payment-index", $request['all_permission']))
-                    $nestedData['options'] .=
-                        '<li>
-                            <button type="button" class="get-payment btn btn-link" data-id = "'.$purchase->id.'"><i class="fa fa-money"></i> '.trans('file.View Payment').'</button>
-                        </li>';
-                if(in_array("purchase-payment-add", $request['all_permission']))
-                    $nestedData['options'] .=
-                        '<li>
-                            <button type="button" class="add-payment btn btn-link" data-id = "'.$purchase->id.'" data-toggle="modal" data-target="#add-payment"><i class="fa fa-plus"></i> '.trans('file.Add Payment').'</button>
-                        </li>';
+                // if(in_array("purchase-payment-index", $request['all_permission']))
+                //     $nestedData['options'] .=
+                //         '<li>
+                //             <button type="button" class="get-payment btn btn-link" data-id = "'.$purchase->id.'"><i class="fa fa-money"></i> '.trans('file.View Payment').'</button>
+                //         </li>';
+                // if(in_array("purchase-payment-add", $request['all_permission']))
+                //     $nestedData['options'] .=
+                //         '<li>
+                //             <button type="button" class="add-payment btn btn-link" data-id = "'.$purchase->id.'" data-toggle="modal" data-target="#add-payment"><i class="fa fa-plus"></i> '.trans('file.Add Payment').'</button>
+                //         </li>';
                 if(in_array("purchases-delete", $request['all_permission']))
                     $nestedData['options'] .= \Form::open(["route" => ["purchases.destroy", $purchase->id], "method" => "DELETE"] ).'
                             <li>

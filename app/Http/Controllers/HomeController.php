@@ -14,11 +14,14 @@ use App\Models\Payroll;
 use App\Models\Quotation;
 use App\Models\Payment;
 use App\Models\Account;
+use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Product_Sale;
 use App\Models\Customer;
 use App\Models\Product;
 use App\Models\RewardPointSetting;
 use App\Models\Product_Warehouse;
+use App\Models\ProductType;
 use App\Models\Unit;
 use Cache;
 use DB;
@@ -200,7 +203,14 @@ class HomeController extends Controller
         else {
             $autoUpdateData = $alertBugEnable = $alertVersionUpgradeEnable = '';
         }
-        return view('backend.index', compact('revenue', 'purchase', 'expense', 'return', 'purchase_return', 'profit', 'payment_recieved', 'payment_sent', 'month', 'yearly_sale_amount', 'yearly_purchase_amount', 'alertBugEnable','alertVersionUpgradeEnable'));
+
+        $totalBrands = Brand::where('is_active', 1)->count();
+        $totalCategories = Category::where('is_active', 1)->count();
+        $totalProductTypes = ProductType::where('is_active', 1)->count();
+        $totalProducts = Product::where('is_active', 1)->count();
+        
+
+        return view('backend.index', compact('revenue', 'purchase', 'expense', 'return', 'purchase_return', 'profit', 'payment_recieved', 'payment_sent', 'month', 'yearly_sale_amount', 'yearly_purchase_amount', 'alertBugEnable','alertVersionUpgradeEnable','totalBrands','totalCategories','totalProductTypes','totalProducts'));
     }
 
     public function yearlyBestSellingPrice()

@@ -76,18 +76,19 @@ class ProductController extends Controller
     {
         $columns = array(
             1 => 'id',
-            2 => 'name',
-            3 => 'code',
-            4 => 'brand_id',
-            5 => 'category_id',
-            6 => 'qty',
-            7 => 'unit_id',
-            8 => 'price',
-            9 => 'cost',
-            10 => 'stock_worth',
-            11 => 'valueone',
-            12 => 'rack_no',
-            13 => 'options'
+            2 => 'type',
+            3 => 'name',
+            4 => 'code',
+            5 => 'brand_id',
+            6 => 'category_id',
+            7 => 'qty',
+            8 => 'unit_id',
+            9 => 'price',
+            10 => 'cost',
+            11 => 'stock_worth',
+            12 => 'valueone',
+            13 => 'rack_no',
+            14 => 'options'
         );
 
         $warehouse_id = $request->input('warehouse_id');
@@ -122,10 +123,13 @@ class ProductController extends Controller
         } else {
             $search = $request->input('search.value');
             $q = Product::select('products.*')
-                ->with('category', 'brand', 'unit')
+                ->with('category', 'brand', 'unit','types','colors','sizes')
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->leftjoin('product_purchases', 'product_purchases.product_id', '=', 'products.id')
                 ->leftjoin('brands', 'products.brand_id', '=', 'brands.id')
+                ->leftjoin('product_types', 'products.type', '=', 'product_types.id')
+                ->leftJoin('variants as color_variant', 'products.color', '=', 'color_variant.id')
+                ->leftJoin('variants as size_variant', 'products.size', '=', 'size_variant.id')
                 ->leftjoin('product_variants', 'products.id', '=', 'product_variants.product_id')
                 ->where([
                     ['products.name', 'LIKE', "%{$search}%"],
@@ -150,6 +154,21 @@ class ProductController extends Controller
                     ['products.is_active', true]
                 ])
                 ->orWhere([
+                    ['product_types.title', 'LIKE', "%{$search}%"],
+                    ['product_types.is_active', true],
+                    ['products.is_active', true]
+                ])
+                ->orWhere([
+                    ['color_variant.name', 'LIKE', "%{$search}%"],
+                    ['color_variant.is_active', true],
+                    ['products.is_active', true]
+                ])
+                ->orWhere([
+                    ['size_variant.name', 'LIKE', "%{$search}%"],
+                    ['size_variant.is_active', true],
+                    ['products.is_active', true]
+                ])
+                ->orWhere([
                     ['product_purchases.imei_number', 'LIKE', "%{$search}%"],
                     ['products.is_active', true]
                 ]);
@@ -168,6 +187,7 @@ class ProductController extends Controller
         $data = array();
         if (!empty($products)) {
             foreach ($products as $key => $product) {
+                info($product->colors);
                 $nestedData['id'] = $product->id;
                 $nestedData['key'] = $key;
                 $product_image = explode(",", $product->image);
@@ -179,6 +199,7 @@ class ProductController extends Controller
                         $nestedData['image'] = '<img src="' . url('images/product', $product_image) . '" height="80" width="80">';
                 } else
                     $nestedData['image'] = '<img src="images/zummXD2dvAtI.png" height="80" width="80">';
+                $nestedData['type'] = $product?->types?->title;
                 $nestedData['name'] = $product->name;
                 $nestedData['code'] = $product->code;
                 if ($product->brand)
@@ -186,16 +207,16 @@ class ProductController extends Controller
                 else
                     $nestedData['brand'] = "N/A";
                 $nestedData['category'] = $product->category->name;
-                if ($warehouse_id > 0 && $product->type == 'standard') {
-                    $nestedData['qty'] = Product_Warehouse::where([
-                        ['product_id', $product->id],
-                        ['warehouse_id', $warehouse_id]
-                    ])->sum('qty');
-                } elseif ($product->type == 'standard') {
-                    $nestedData['qty'] = Product_Warehouse::where([
-                        ['product_id', $product->id],
-                    ])->sum('qty');
-                } else
+                // if ($warehouse_id > 0 && $product->type == 'standard') {
+                //     $nestedData['qty'] = Product_Warehouse::where([
+                //         ['product_id', $product->id],
+                //         ['warehouse_id', $warehouse_id]
+                //     ])->sum('qty');
+                // } elseif ($product->type == 'standard') {
+                //     $nestedData['qty'] = Product_Warehouse::where([
+                //         ['product_id', $product->id],
+                //     ])->sum('qty');
+                // } else
                     $nestedData['qty'] = $product->qty;
 
                 if ($product->unit_id)
@@ -217,6 +238,10 @@ class ProductController extends Controller
                 //    add extra value
 
                 $nestedData['valueone'] = $product->valueone;
+                $nestedData['invoice_chalan'] = $product->invoice_chalan;
+                $nestedData['color'] = $product?->colors?->name;
+                $nestedData['size'] = $product?->sizes?->name;
+                $nestedData['shelf_no'] = $product->shelf_no;
                 $nestedData['rack_no'] = $product->rack_no;
                 //fetching custom fields data
                 foreach ($field_names as $field_name) {
@@ -270,7 +295,7 @@ class ProductController extends Controller
                     $tax_method = trans('file.Inclusive');
 
                 $nestedData['product'] = array(
-                    '[ "' . $product->type . '"',
+                    '[ "' . $nestedData['type'] . '"',
                     ' "' . $product->name . '"',
                     ' "' . $product->code . '"',
                     ' "' . $nestedData['brand'] . '"',
@@ -289,7 +314,13 @@ class ProductController extends Controller
                     ' "' . $product->price_list . '"',
                     ' "' . $nestedData['qty'] . '"',
                     ' "' . $product->image . '"',
-                    ' "' . $product->is_variant . '"]'
+                    ' "' . $product->is_variant . '"',
+                    ' "' . $nestedData['invoice_chalan'] . '"',
+                    ' "' . $nestedData['color'] . '"',
+                    ' "' . $nestedData['size'] . '"',
+                    ' "' . $nestedData['shelf_no'] . '"',
+                    ' "' . $nestedData['rack_no'] . '"
+                    ]'
                 );
                 //$nestedData['imagedata'] = DNS1D::getBarcodePNG($product->code, $product->barcode_symbology);
                 $data[] = $nestedData;

@@ -70,7 +70,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>{{trans('file.name')}}</th>
-                                                        <th>{{trans('file.Code')}}</th>
+                                                        <th> PO Number</th>
                                                         <th>{{trans('file.Quantity')}}</th>
                                                         <th class="recieved-product-qty">{{trans('file.Recieved')}}</th>
                                                         <th>{{trans('file.Unit Cost')}}</th>

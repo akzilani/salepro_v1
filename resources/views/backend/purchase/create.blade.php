@@ -13,7 +13,7 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header d-flex align-items-center">
-                        <h4>{{trans('file.Add Purchase')}}</h4>
+                        <h4>Product In</h4>
                     </div>
                     <div class="card-body">
                         <p class="italic"><small>{{trans('file.The field labels marked with * are required input fields')}}.</small></p>
@@ -30,7 +30,7 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>
-                                                {{trans('file.Reference No')}}
+                                            Invoice Chalan 
                                             </label>
                                             <input type="text" name="reference_no" class="form-control" />
                                         </div>
@@ -169,7 +169,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>{{trans('file.name')}}</th>
-                                                        <th>{{trans('file.Code')}}</th>
+                                                        <th> PO Number</th>
                                                         <th>{{trans('file.Quantity')}}</th>
                                                         <th class="recieved-product-qty d-none custom-dn">{{trans('file.Recieved')}}</th>
                                                         <th class="custom-dn">{{trans('file.Batch No')}}</th>
@@ -246,16 +246,16 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                    <!-- <div class="col-md-4">
                                         <div class="form-group">
                                             <label>
                                                 <strong>{{trans('file.Discount')}}</strong>
                                             </label>
                                             <input type="number" name="order_discount" class="form-control" step="any" />
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="col-md-4">
-                                        <div class="form-group">
+                                        <div class="form-group custom-dn">
                                             <label>
                                                 <strong>{{trans('file.Shipping Cost')}}</strong>
                                             </label>
